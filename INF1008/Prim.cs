@@ -22,6 +22,9 @@ namespace INF1008
 
         public struct Noeud
         {
+            public Position Pos;
+            public String Direction{ get; set; }
+            public int Valeur { get; set; }
             public Boolean Visited { get; set; }
         }
 
@@ -32,14 +35,15 @@ namespace INF1008
         };
 
         Dictionary<Position,Noeud> dictionary = new Dictionary<Position, Noeud>();
-
+        int[,] tableauHorizontal;
+        int[,] tableauVertical;
         public Prim(int nbLignes,int nbColonnes)
         {
 
             int nbNoeuds = nbLignes * nbColonnes;
             int nbAretes = (nbLignes * (nbColonnes - 1)) + (nbColonnes * (nbLignes - 1)); //pas certain que cet info serve a quelque chose
-            int[,] tableauHorizontal = new int[nbLignes, nbColonnes - 1];
-            int[,] tableauVertical = new int[nbLignes - 1, nbColonnes];
+            tableauHorizontal = new int[nbLignes, nbColonnes - 1];
+            tableauVertical = new int[nbLignes - 1, nbColonnes];
 
             Random rnd = new Random();
             for (int i = 0; i < nbLignes; i++)
@@ -72,7 +76,8 @@ namespace INF1008
 
                     Noeud noeud = new Noeud
                     {
-                        Visited = false
+                        Visited = false,
+                        Pos = position
                     };
 
                     dictionary.Add(position, noeud);
@@ -80,17 +85,39 @@ namespace INF1008
                 }
             }
 
-            pos.Ligne = pos.Ligne + 1;
-            pos.Colonne = pos.Colonne + 1;
 
-            if (dictionary.ContainsKey(pos))
+            Noeud node = ProcessPos(pos);
+            Console.WriteLine("Position actuel: [" + node.Pos.Ligne + "," + node.Pos.Colonne + "]");
+
+
+        }
+
+        private Noeud ProcessPos(Position pos)
+        {
+            int valeurArete;
+            Noeud node = dictionary[pos];
+            valeurArete = tableauHorizontal[pos.Ligne, pos.Colonne];
+
+            if (valeurArete > tableauVertical[pos.Ligne, pos.Colonne])
             {
-                Noeud node = dictionary[pos];
-                if(node.Visited == false)
-                Console.WriteLine("not visited!" + " " + pos.Ligne + "," + pos.Colonne);
-                Console.WriteLine("valeur arrete horizontal: " + tableauHorizontal[pos.Ligne,pos.Colonne]);
-                Console.WriteLine("valeur arrete vertical: " + tableauVertical[pos.Ligne, pos.Colonne]);
+                valeurArete = tableauVertical[pos.Ligne, pos.Colonne];
+                node.Valeur = tableauHorizontal[pos.Ligne, pos.Colonne];
+                node.Direction = "Horizontal";
+                tableauVertical[pos.Ligne, pos.Colonne] = 11;
+                pos.Ligne = pos.Ligne + 1;
             }
+            else
+            {
+                node.Valeur = tableauVertical[pos.Ligne, pos.Colonne];
+                node.Direction = "Vertical";
+                tableauHorizontal[pos.Ligne, pos.Colonne] = 11;
+                pos.Colonne = pos.Colonne + 1;
+            }
+
+            Console.WriteLine(node.Direction + " " + node.Valeur);
+            Console.WriteLine("Position actuel: [" + pos.Ligne + "," + pos.Colonne + "]");
+
+            return dictionary[pos];
         }
     }
 }
