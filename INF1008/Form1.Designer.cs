@@ -29,18 +29,22 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.lblControles = new System.Windows.Forms.Label();
-            this.cbHauteur = new System.Windows.Forms.ComboBox();
-            this.cbLargeur = new System.Windows.Forms.ComboBox();
+            this.lblLargeur = new System.Windows.Forms.Label();
             this.lblHauteur = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.cbLargeur = new System.Windows.Forms.ComboBox();
+            this.cbHauteur = new System.Windows.Forms.ComboBox();
+            this.lblControles = new System.Windows.Forms.Label();
+            this.btnPrimLabGen = new System.Windows.Forms.Button();
+            this.lblErreur = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.lblErreur);
+            this.panel1.Controls.Add(this.btnPrimLabGen);
+            this.panel1.Controls.Add(this.lblLargeur);
             this.panel1.Controls.Add(this.lblHauteur);
             this.panel1.Controls.Add(this.cbLargeur);
             this.panel1.Controls.Add(this.cbHauteur);
@@ -49,14 +53,50 @@
             this.panel1.Size = new System.Drawing.Size(234, 412);
             this.panel1.TabIndex = 0;
             // 
-            // lblControles
+            // lblLargeur
             // 
-            this.lblControles.AutoSize = true;
-            this.lblControles.Location = new System.Drawing.Point(667, 9);
-            this.lblControles.Name = "lblControles";
-            this.lblControles.Size = new System.Drawing.Size(51, 13);
-            this.lblControles.TabIndex = 0;
-            this.lblControles.Text = "Controles";
+            this.lblLargeur.AutoSize = true;
+            this.lblLargeur.Location = new System.Drawing.Point(25, 72);
+            this.lblLargeur.Name = "lblLargeur";
+            this.lblLargeur.Size = new System.Drawing.Size(46, 13);
+            this.lblLargeur.TabIndex = 3;
+            this.lblLargeur.Text = "Largeur:";
+            // 
+            // lblHauteur
+            // 
+            this.lblHauteur.AutoSize = true;
+            this.lblHauteur.Location = new System.Drawing.Point(25, 45);
+            this.lblHauteur.Name = "lblHauteur";
+            this.lblHauteur.Size = new System.Drawing.Size(48, 13);
+            this.lblHauteur.TabIndex = 2;
+            this.lblHauteur.Text = "Hauteur:";
+            // 
+            // cbLargeur
+            // 
+            this.cbLargeur.FormattingEnabled = true;
+            this.cbLargeur.Items.AddRange(new object[] {
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20"});
+            this.cbLargeur.Location = new System.Drawing.Point(134, 69);
+            this.cbLargeur.Name = "cbLargeur";
+            this.cbLargeur.Size = new System.Drawing.Size(56, 21);
+            this.cbLargeur.TabIndex = 1;
             // 
             // cbHauteur
             // 
@@ -85,50 +125,33 @@
             this.cbHauteur.Size = new System.Drawing.Size(56, 21);
             this.cbHauteur.TabIndex = 0;
             // 
-            // cbLargeur
+            // lblControles
             // 
-            this.cbLargeur.FormattingEnabled = true;
-            this.cbLargeur.Items.AddRange(new object[] {
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20"});
-            this.cbLargeur.Location = new System.Drawing.Point(134, 81);
-            this.cbLargeur.Name = "cbLargeur";
-            this.cbLargeur.Size = new System.Drawing.Size(56, 21);
-            this.cbLargeur.TabIndex = 1;
+            this.lblControles.AutoSize = true;
+            this.lblControles.Location = new System.Drawing.Point(667, 9);
+            this.lblControles.Name = "lblControles";
+            this.lblControles.Size = new System.Drawing.Size(51, 13);
+            this.lblControles.TabIndex = 0;
+            this.lblControles.Text = "Controles";
             // 
-            // lblHauteur
+            // btnPrimLabGen
             // 
-            this.lblHauteur.AutoSize = true;
-            this.lblHauteur.Location = new System.Drawing.Point(25, 45);
-            this.lblHauteur.Name = "lblHauteur";
-            this.lblHauteur.Size = new System.Drawing.Size(35, 13);
-            this.lblHauteur.TabIndex = 2;
-            this.lblHauteur.Text = "label1";
+            this.btnPrimLabGen.Location = new System.Drawing.Point(28, 122);
+            this.btnPrimLabGen.Name = "btnPrimLabGen";
+            this.btnPrimLabGen.Size = new System.Drawing.Size(162, 23);
+            this.btnPrimLabGen.TabIndex = 4;
+            this.btnPrimLabGen.Text = "Generer labyrinthe Prim";
+            this.btnPrimLabGen.UseVisualStyleBackColor = true;
+            this.btnPrimLabGen.Click += new System.EventHandler(this.btnPrimLabGen_Click);
             // 
-            // label2
+            // lblErreur
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(25, 84);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "label2";
+            this.lblErreur.AutoSize = true;
+            this.lblErreur.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblErreur.Location = new System.Drawing.Point(28, 103);
+            this.lblErreur.Name = "lblErreur";
+            this.lblErreur.Size = new System.Drawing.Size(0, 13);
+            this.lblErreur.TabIndex = 5;
             // 
             // Form1
             // 
@@ -150,10 +173,12 @@
 
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label lblControles;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblLargeur;
         private System.Windows.Forms.Label lblHauteur;
         private System.Windows.Forms.ComboBox cbLargeur;
         private System.Windows.Forms.ComboBox cbHauteur;
+        private System.Windows.Forms.Label lblErreur;
+        private System.Windows.Forms.Button btnPrimLabGen;
     }
 }
 

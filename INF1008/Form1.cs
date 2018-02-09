@@ -16,5 +16,23 @@ namespace INF1008
         {
             InitializeComponent();
         }
+
+        private void btnPrimLabGen_Click(object sender, EventArgs e)
+        {
+            if(cbHauteur.SelectedIndex == -1 || cbLargeur.SelectedIndex == -1)
+            {
+                lblErreur.Text = "Selectionner la hauteur et la largeur";
+            }
+            else
+            {
+                lblErreur.Text = "";
+
+                int nbLignes = int.Parse(cbHauteur.SelectedItem.ToString());
+                int nbColonnes = int.Parse(cbLargeur.SelectedItem.ToString());
+
+                Prim prim = new Prim(nbLignes, nbColonnes);
+
+            }
+        }
     }
 }
