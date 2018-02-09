@@ -87,57 +87,46 @@ namespace INF1008
             }
 
 
-            Noeud node = ProcessPos(pos);
-            Console.WriteLine("Position actuel: [" + node.Pos.Ligne + "," + node.Pos.Colonne + "]");
-            Noeud node2 = ProcessPos(node.Pos);
-            Console.WriteLine("Position actuel: [" + node2.Pos.Ligne + "," + node2.Pos.Colonne + "]");
-
-            for (int i = 0; i < nbLignes; i++)
-            {
-                for (int j = 0; j < nbColonnes - 1; j++)
-                {
-                    Console.WriteLine("[{0}, {1}] = {2}", i, j, tableauHorizontal[i, j]);//debug
-                }
-            }
-            Console.WriteLine("");
-            for (int i = 0; i < nbLignes - 1; i++)
-            {
-                for (int j = 0; j < nbColonnes; j++)
-                {
-                    Console.WriteLine("[{0}, {1}] = {2}", i, j, tableauVertical[i, j]);//debug
-                }
-            }
+            Position now = ProcessNode(dictionary[pos]);
+            Console.WriteLine("Position actuel: [" + now.Ligne + "," + now.Colonne + "]");
+            Position now2 = ProcessNode(dictionary[now]);
+            Console.WriteLine("Position actuel: [" + now2.Ligne + "," + now2.Colonne + "]");
 
         }
 
-        private Noeud ProcessPos(Position pos)
+        private Position ProcessNode(Noeud node)
         {
-            int valeurArete;
-            Noeud node = dictionary[pos];
-            valeurArete = tableauHorizontal[pos.Ligne, pos.Colonne];
-
-            if (valeurArete > tableauVertical[pos.Ligne, pos.Colonne])
+            Position result = new Position
             {
-                valeurArete = tableauVertical[pos.Ligne, pos.Colonne];
-                node.Valeur = tableauHorizontal[pos.Ligne, pos.Colonne];
+                Ligne = node.Pos.Ligne,
+                Colonne = node.Pos.Colonne
+            };
+
+            int valeurArete;
+            valeurArete = tableauHorizontal[result.Ligne, result.Colonne];
+
+            if (valeurArete > tableauVertical[result.Ligne, result.Colonne])
+            {
+                valeurArete = tableauVertical[result.Ligne, result.Colonne];
+                node.Valeur = tableauHorizontal[result.Ligne, result.Colonne];
                 node.Direction = "Horizontal";
-                tableauVertical[pos.Ligne, pos.Colonne] = 11;
+                tableauVertical[result.Ligne, result.Colonne] = 11;
                 Console.WriteLine(node.Direction + " " + node.Valeur);
-                Console.WriteLine("Position actuel: [" + pos.Ligne + "," + pos.Colonne + "]\n");
-                pos.Ligne = pos.Ligne + 1;
+                Console.WriteLine("Position actuel: [" + result.Ligne + "," + result.Colonne + "]\n");
+                result.Ligne = result.Ligne + 1;
             }
             else
             {
-                node.Valeur = tableauVertical[pos.Ligne, pos.Colonne];
+                node.Valeur = tableauVertical[result.Ligne, result.Colonne];
                 node.Direction = "Vertical";
-                tableauHorizontal[pos.Ligne, pos.Colonne] = 11;
+                tableauHorizontal[result.Ligne, result.Colonne] = 11;
                 Console.WriteLine(node.Direction + " " + node.Valeur);
-                Console.WriteLine("Position actuel: [" + pos.Ligne + "," + pos.Colonne + "]\n");
-                pos.Colonne = pos.Colonne + 1;
+                Console.WriteLine("Position actuel: [" + result.Ligne + "," + result.Colonne + "]\n");
+                result.Colonne = result.Colonne + 1;
             }
 
             //TODO ajouter le noeud initial dans un array de noeuds traiter
-            return dictionary[pos];
+            return result;
         }
     }
 }
