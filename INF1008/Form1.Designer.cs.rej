@@ -1,0 +1,29 @@
+diff a/INF1008/Form1.Designer.cs b/INF1008/Form1.Designer.cs	(rejected hunks)
+@@ -29,22 +29,18 @@
+         private void InitializeComponent()
+         {
+             this.panel1 = new System.Windows.Forms.Panel();
+-            this.lblLargeur = new System.Windows.Forms.Label();
+-            this.lblHauteur = new System.Windows.Forms.Label();
+-            this.cbLargeur = new System.Windows.Forms.ComboBox();
+-            this.cbHauteur = new System.Windows.Forms.ComboBox();
+             this.lblControles = new System.Windows.Forms.Label();
+-            this.btnPrimLabGen = new System.Windows.Forms.Button();
+-            this.lblErreur = new System.Windows.Forms.Label();
++            this.cbHauteur = new System.Windows.Forms.ComboBox();
++            this.cbLargeur = new System.Windows.Forms.ComboBox();
++            this.lblHauteur = new System.Windows.Forms.Label();
++            this.label2 = new System.Windows.Forms.Label();
+             this.panel1.SuspendLayout();
+             this.SuspendLayout();
+             // 
+             // panel1
+             // 
+             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+-            this.panel1.Controls.Add(this.lblErreur);
+-            this.panel1.Controls.Add(this.btnPrimLabGen);
+-            this.panel1.Controls.Add(this.lblLargeur);
++            this.panel1.Controls.Add(this.label2);
+             this.panel1.Controls.Add(this.lblHauteur);
+             this.panel1.Controls.Add(this.cbLargeur);
+             this.panel1.Controls.Add(this.cbHauteur);
