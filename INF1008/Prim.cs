@@ -37,6 +37,7 @@ namespace INF1008
         Dictionary<Position,Noeud> dictionary = new Dictionary<Position, Noeud>();
         int[,] tableauHorizontal;
         int[,] tableauVertical;
+
         public Prim(int nbLignes,int nbColonnes)
         {
 
@@ -54,7 +55,7 @@ namespace INF1008
                     Console.WriteLine("[{0}, {1}] = {2}", i, j, tableauHorizontal[i, j]);//debug
                 }
             }
-
+            Console.WriteLine("");
             for (int i = 0; i < nbLignes - 1; i++)
             {
                 for (int j = 0; j < nbColonnes; j++)
@@ -63,7 +64,7 @@ namespace INF1008
                     Console.WriteLine("[{0}, {1}] = {2}", i, j, tableauVertical[i, j]);//debug
                 }
             }
-
+            Console.WriteLine("");
             for (int i = 0; i < nbLignes; i++)
             {
                 for (int j = 0; j < nbColonnes; j++)
@@ -88,7 +89,24 @@ namespace INF1008
 
             Noeud node = ProcessPos(pos);
             Console.WriteLine("Position actuel: [" + node.Pos.Ligne + "," + node.Pos.Colonne + "]");
+            Noeud node2 = ProcessPos(node.Pos);
+            Console.WriteLine("Position actuel: [" + node2.Pos.Ligne + "," + node2.Pos.Colonne + "]");
 
+            for (int i = 0; i < nbLignes; i++)
+            {
+                for (int j = 0; j < nbColonnes - 1; j++)
+                {
+                    Console.WriteLine("[{0}, {1}] = {2}", i, j, tableauHorizontal[i, j]);//debug
+                }
+            }
+            Console.WriteLine("");
+            for (int i = 0; i < nbLignes - 1; i++)
+            {
+                for (int j = 0; j < nbColonnes; j++)
+                {
+                    Console.WriteLine("[{0}, {1}] = {2}", i, j, tableauVertical[i, j]);//debug
+                }
+            }
 
         }
 
@@ -104,6 +122,8 @@ namespace INF1008
                 node.Valeur = tableauHorizontal[pos.Ligne, pos.Colonne];
                 node.Direction = "Horizontal";
                 tableauVertical[pos.Ligne, pos.Colonne] = 11;
+                Console.WriteLine(node.Direction + " " + node.Valeur);
+                Console.WriteLine("Position actuel: [" + pos.Ligne + "," + pos.Colonne + "]\n");
                 pos.Ligne = pos.Ligne + 1;
             }
             else
@@ -111,11 +131,11 @@ namespace INF1008
                 node.Valeur = tableauVertical[pos.Ligne, pos.Colonne];
                 node.Direction = "Vertical";
                 tableauHorizontal[pos.Ligne, pos.Colonne] = 11;
+                Console.WriteLine(node.Direction + " " + node.Valeur);
+                Console.WriteLine("Position actuel: [" + pos.Ligne + "," + pos.Colonne + "]\n");
                 pos.Colonne = pos.Colonne + 1;
             }
 
-            Console.WriteLine(node.Direction + " " + node.Valeur);
-            Console.WriteLine("Position actuel: [" + pos.Ligne + "," + pos.Colonne + "]");
             //TODO ajouter le noeud initial dans un array de noeuds traiter
             return dictionary[pos];
         }
