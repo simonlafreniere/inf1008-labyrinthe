@@ -116,7 +116,7 @@ namespace INF1008
 
             Console.WriteLine(node.Direction + " " + node.Valeur);
             Console.WriteLine("Position actuel: [" + pos.Ligne + "," + pos.Colonne + "]");
-
+            //TODO ajouter le noeud initial dans un array de noeuds traiter
             return dictionary[pos];
         }
     }
