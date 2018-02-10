@@ -35,12 +35,15 @@ namespace INF1008
         };
 
         Dictionary<Position,Noeud> dictionary = new Dictionary<Position, Noeud>();
-        int[,] tableauHorizontal;
-        int[,] tableauVertical;
+        private int[,] tableauHorizontal;
+        private int[,] tableauVertical;
+        private int nbLignes;
+        private int nbColonnes;
 
-        public Prim(int nbLignes,int nbColonnes)
+        public Prim(int nbL,int nbC)
         {
-
+            nbLignes = nbL;
+            nbColonnes = nbC;
             int nbNoeuds = nbLignes * nbColonnes;
             int nbAretes = (nbLignes * (nbColonnes - 1)) + (nbColonnes * (nbLignes - 1)); //pas certain que cet info serve a quelque chose
             tableauHorizontal = new int[nbLignes, nbColonnes - 1];
@@ -55,7 +58,7 @@ namespace INF1008
                     Console.WriteLine("[{0}, {1}] = {2}", i, j, tableauHorizontal[i, j]);//debug
                 }
             }
-            Console.WriteLine("");
+            Console.WriteLine("");//debug
             for (int i = 0; i < nbLignes - 1; i++)
             {
                 for (int j = 0; j < nbColonnes; j++)
@@ -64,7 +67,7 @@ namespace INF1008
                     Console.WriteLine("[{0}, {1}] = {2}", i, j, tableauVertical[i, j]);//debug
                 }
             }
-            Console.WriteLine("");
+            Console.WriteLine("");//debug
             for (int i = 0; i < nbLignes; i++)
             {
                 for (int j = 0; j < nbColonnes; j++)
@@ -82,7 +85,6 @@ namespace INF1008
                     };
 
                     dictionary.Add(position, noeud);
-
                 }
             }
 
@@ -102,30 +104,132 @@ namespace INF1008
                 Colonne = node.Pos.Colonne
             };
 
-            int valeurArete;
-            valeurArete = tableauHorizontal[result.Ligne, result.Colonne];
-
-            if (valeurArete > tableauVertical[result.Ligne, result.Colonne])
+            Position resultUP = new Position
             {
-                valeurArete = tableauVertical[result.Ligne, result.Colonne];
-                node.Valeur = tableauHorizontal[result.Ligne, result.Colonne];
-                node.Direction = "Horizontal";
-                tableauVertical[result.Ligne, result.Colonne] = 11;
-                Console.WriteLine(node.Direction + " " + node.Valeur);
-                Console.WriteLine("Position actuel: [" + result.Ligne + "," + result.Colonne + "]\n");
-                result.Ligne = result.Ligne + 1;
+                Ligne = node.Pos.Ligne -1,
+                Colonne = node.Pos.Colonne
+            };
+
+            Position resultDOWN = new Position
+            {
+                Ligne = node.Pos.Ligne + 1,
+                Colonne = node.Pos.Colonne
+            };
+
+            Position resultLEFT = new Position
+            {
+                Ligne = node.Pos.Ligne,
+                Colonne = node.Pos.Colonne - 1
+            };
+
+            Position resultRIGHT = new Position
+            {
+                Ligne = node.Pos.Ligne,
+                Colonne = node.Pos.Colonne + 1
+            };
+
+            int valeurAreteLeft;
+            int valeurAreteRight;
+            int valeurAreteUp;
+            int valeurAreteDown;
+
+            //Position 0,0 Depart, pas de verification si les noeuds adjacents ont ete visite
+            if (result.Ligne == 0 && result.Colonne == 0)
+            {
+                //On va chercher la valeur des aretes adjacentes
+                valeurAreteRight = tableauHorizontal[result.Ligne, result.Colonne];
+                valeurAreteDown = tableauVertical[result.Ligne, result.Colonne];
+
+                //On verifie l'arete la plus courte, on change la valeur de l'arete la plus courte pour 11, on ajuste la position de result.
+                //down
+                if (valeurAreteRight > valeurAreteDown)
+                {
+                    tableauVertical[result.Ligne, result.Colonne] = 11;
+                    Console.WriteLine("Position actuel: [" + result.Ligne + "," + result.Colonne + "]\n");
+                    result.Ligne = result.Ligne + 1;
+                }
+                //right
+                else
+                {
+                    tableauHorizontal[result.Ligne, result.Colonne] = 11;
+                    Console.WriteLine("Position actuel: [" + result.Ligne + "," + result.Colonne + "]\n");
+                    result.Colonne = result.Colonne + 1;
+                }
+
+                node.Visited = true;
+                //TODO ajouter le noeud dans un array de noeuds traiter
             }
+
+            //Si la Position du Noeud est sur la ligne = 0
+            else if (result.Ligne == 0)
+            {
+                //On va chercher la valeur des aretes adjacentes
+                valeurAreteRight = tableauHorizontal[result.Ligne, result.Colonne];
+                valeurAreteDown = tableauVertical[result.Ligne, result.Colonne];
+                valeurAreteLeft = tableauHorizontal[result.Ligne, result.Colonne - 1];
+
+                //On verifie que les noeuds au bout de ces arretes n'ont pas deja ete visite, si oui on change la valeur de l'arete pour 33-34 ou 35
+                if(dictionary[resultDOWN].Visited==true)
+                {
+                    tableauVertical[result.Ligne, result.Colonne] = 33;
+                }
+                else if(dictionary[resultRIGHT].Visited == true)
+                {
+                    tableauHorizontal[result.Ligne, result.Colonne] = 34;
+                }
+                else if (dictionary[resultLEFT].Visited == true)
+                {
+                    tableauHorizontal[result.Ligne, result.Colonne - 1] = 35;
+                }
+                
+                //On verifie l'arete la plus courte, on change la valeur de l'arete la plus courte pour 11, on ajuste la position de result.
+                //down
+                if (valeurAreteRight >= valeurAreteDown && valeurAreteLeft >= valeurAreteDown)
+                {
+                    tableauVertical[result.Ligne, result.Colonne] = 11;
+                    Console.WriteLine("Position actuel: [" + result.Ligne + "," + result.Colonne + "]\n");
+                    result.Ligne = result.Ligne + 1;
+                }
+                //right
+                else if (valeurAreteRight < valeurAreteDown && valeurAreteRight < valeurAreteLeft)
+                {
+                    tableauHorizontal[result.Ligne, result.Colonne] = 11;
+                    Console.WriteLine("Position actuel: [" + result.Ligne + "," + result.Colonne + "]\n");
+                    result.Colonne = result.Colonne + 1;
+                }
+                //left
+                else
+                {
+                    tableauHorizontal[result.Ligne, result.Colonne] = 11;
+                    Console.WriteLine("Position actuel: [" + result.Ligne + "," + result.Colonne + "]\n");
+                    result.Colonne = result.Colonne - 1;
+                }
+
+                node.Visited = true;
+                //TODO ajouter le noeud dans un array de noeuds traiter
+            }
+
+            //Si la Position du Noeud est sur la ligne = nbLignes, traiter RIGHT, UP, LEFT
+            else if (result.Ligne == nbLignes)
+            {
+
+            }
+            //Si la Position du Noeud est sur la Colonne = 0, traiter RIGHT, UP, DOWN
+            else if (result.Colonne == 0)
+            {
+
+            }
+            //Si la Position du Noeud est sur la Colonne = nbColonnes LEFT, UP, DOWN
+            else if (result.Colonne == nbColonnes)
+            {
+
+            }
+            //Est au centre, les 4 directions sont a prendre en compte
             else
             {
-                node.Valeur = tableauVertical[result.Ligne, result.Colonne];
-                node.Direction = "Vertical";
-                tableauHorizontal[result.Ligne, result.Colonne] = 11;
-                Console.WriteLine(node.Direction + " " + node.Valeur);
-                Console.WriteLine("Position actuel: [" + result.Ligne + "," + result.Colonne + "]\n");
-                result.Colonne = result.Colonne + 1;
+
             }
 
-            //TODO ajouter le noeud initial dans un array de noeuds traiter
             return result;
         }
     }
