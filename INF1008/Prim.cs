@@ -153,10 +153,15 @@ namespace INF1008
                     Console.WriteLine("Position actuel: [" + result.Ligne + "," + result.Colonne + "]\n");
                     result.Colonne = result.Colonne + 1;
                 }
-
-                node.Visited = true;
-                //TODO ajouter le noeud dans un array de noeuds traiter
             }
+
+            //TODO faire les fonctions suivantes ici
+            //
+            //Si la Position du Noeud est sur la Colonne = 0 && Ligne = nbLignes, traiter RIGHT, UP
+            //Si la Position du Noeud est sur la Colonne = nbColonne && Ligne = nbLignes, traiter LEFT, UP
+            //Si la Position du Noeud est sur la Colonne = nbColonne && Ligne = 0, traiter LEFT, DOWN
+            //
+            //TODO fin
 
             //Si la Position du Noeud est sur la ligne = 0
             else if (result.Ligne == 0)
@@ -169,15 +174,18 @@ namespace INF1008
                 //On verifie que les noeuds au bout de ces arretes n'ont pas deja ete visite, si oui on change la valeur de l'arete pour 33-34 ou 35
                 if(dictionary[resultDOWN].Visited==true)
                 {
-                    tableauVertical[result.Ligne, result.Colonne] = 33;
+                    if (tableauVertical[result.Ligne, result.Colonne] != 11)
+                        tableauVertical[result.Ligne, result.Colonne] = 33;
                 }
                 else if(dictionary[resultRIGHT].Visited == true)
                 {
-                    tableauHorizontal[result.Ligne, result.Colonne] = 34;
+                    if (tableauHorizontal[result.Ligne, result.Colonne] != 11)
+                        tableauHorizontal[result.Ligne, result.Colonne] = 34;
                 }
                 else if (dictionary[resultLEFT].Visited == true)
                 {
-                    tableauHorizontal[result.Ligne, result.Colonne - 1] = 35;
+                    if (tableauHorizontal[result.Ligne, result.Colonne - 1] != 11)
+                        tableauHorizontal[result.Ligne, result.Colonne - 1] = 35;
                 }
                 
                 //On verifie l'arete la plus courte, on change la valeur de l'arete la plus courte pour 11, on ajuste la position de result.
@@ -202,13 +210,10 @@ namespace INF1008
                     Console.WriteLine("Position actuel: [" + result.Ligne + "," + result.Colonne + "]\n");
                     result.Colonne = result.Colonne - 1;
                 }
-
-                node.Visited = true;
-                //TODO ajouter le noeud dans un array de noeuds traiter
             }
 
             //Si la Position du Noeud est sur la ligne = nbLignes, traiter RIGHT, UP, LEFT
-            else if (result.Ligne == nbLignes)
+            else if (result.Ligne == nbLignes - 1)
             {
                 //On va chercher la valeur des aretes adjacentes
                 valeurAreteRight = tableauHorizontal[result.Ligne, result.Colonne];
@@ -218,15 +223,18 @@ namespace INF1008
                 //On verifie que les noeuds au bout de ces arretes n'ont pas deja ete visite, si oui on change la valeur de l'arete pour 33-34 ou 35
                 if (dictionary[resultUP].Visited == true)
                 {
-                    tableauVertical[result.Ligne - 1, result.Colonne] = 33;
+                    if (tableauVertical[result.Ligne - 1, result.Colonne] != 11)
+                        tableauVertical[result.Ligne - 1, result.Colonne] = 33;
                 }
                 else if (dictionary[resultRIGHT].Visited == true)
                 {
-                    tableauHorizontal[result.Ligne, result.Colonne] = 34;
+                    if (tableauHorizontal[result.Ligne, result.Colonne] != 11)
+                        tableauHorizontal[result.Ligne, result.Colonne] = 34; 
                 }
                 else if (dictionary[resultLEFT].Visited == true)
                 {
-                    tableauHorizontal[result.Ligne, result.Colonne - 1] = 35;
+                    if (tableauHorizontal[result.Ligne, result.Colonne - 1] != 11)
+                        tableauHorizontal[result.Ligne, result.Colonne - 1] = 35;
                 }
 
                 //On verifie l'arete la plus courte, on change la valeur de l'arete la plus courte pour 11, on ajuste la position de result.
@@ -251,17 +259,14 @@ namespace INF1008
                     Console.WriteLine("Position actuel: [" + result.Ligne + "," + result.Colonne + "]\n");
                     result.Colonne = result.Colonne - 1;
                 }
-
-                node.Visited = true;
-                //TODO ajouter le noeud dans un array de noeuds traiter
             }
             //Si la Position du Noeud est sur la Colonne = 0, traiter RIGHT, UP, DOWN
             else if (result.Colonne == 0)
             {
 
             }
-            //Si la Position du Noeud est sur la Colonne = nbColonnes LEFT, UP, DOWN
-            else if (result.Colonne == nbColonnes)
+            //Si la Position du Noeud est sur la Colonne = nbColonnes, traiter LEFT, UP, DOWN
+            else if (result.Colonne == nbColonnes - 1)
             {
 
             }
@@ -271,6 +276,8 @@ namespace INF1008
 
             }
 
+            node.Visited = true;
+            //TODO ajouter le noeud dans un array de noeuds traiter
             return result;
         }
     }
