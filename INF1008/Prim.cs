@@ -87,28 +87,30 @@ namespace INF1008
                         Pos = position,
                         Permanent = false,
                         Predecesseur = -1,
-                        Poids = 999
+                        Poids = 999,
+                        Direction = null
                     };
 
                     tableauNoeuds[i, j] = noeud;
                 }
             }
 
+            //Methode qui traite le point de depart pour creer le premier segment du graphe
             Start();
 
             //debug for loop
             for (int i = 0; i < itr; i++)
             {
-                Console.WriteLine("Noeud: [" + NoeudsAdjacent[i].Pos.Ligne + "," + NoeudsAdjacent[i].Pos.Colonne + "] Valeur Poids Adj: " + NoeudsAdjacent[i].Poids + "   Direction: " + NoeudsAdjacent[i].Direction + "    Predecesseur: [" + NoeudsTraite[NoeudsAdjacent[i].Predecesseur].Pos.Ligne + "," + NoeudsTraite[NoeudsAdjacent[i].Predecesseur].Pos.Colonne + "]");
+                Console.WriteLine("Noeud: [" + NoeudsAdjacent[i].Pos.Ligne + "," + NoeudsAdjacent[i].Pos.Colonne + "] ADJACENTE:   Valeur Poids: " + NoeudsAdjacent[i].Poids + "   Direction: " + NoeudsAdjacent[i].Direction + "    Predecesseur: [" + NoeudsTraite[NoeudsAdjacent[i].Predecesseur].Pos.Ligne + "," + NoeudsTraite[NoeudsAdjacent[i].Predecesseur].Pos.Colonne + "]");
             }
             for (int i = 0; i < ittr; i++)
             {
-                Console.WriteLine("Noeud: [" + NoeudsTraite[i].Pos.Ligne + "," + NoeudsTraite[i].Pos.Colonne + "] Valeur Poids Traite: " + NoeudsTraite[i].Poids);
+                Console.WriteLine("Noeud: [" + NoeudsTraite[i].Pos.Ligne + "," + NoeudsTraite[i].Pos.Colonne + "] TRAITE:   Valeur Poid: " + NoeudsTraite[i].Poids);
             }
 
 
-            /*    for (int i = 0; i < nbNoeuds; i++)
-                {
+            /* for (int i = 0; i < nbNoeuds - 2; i++)
+               {
                     ProcessNode();
                }
                */
@@ -150,9 +152,10 @@ namespace INF1008
 
                 //On ajoute les noeuds a leur vecteur respectifs
                 NoeudsTraite[ittr++] = tableauNoeuds[1, 0];
-                noeudCourant = tableauNoeuds[1, 0];
                 NoeudsAdjacent[itr++] = tableauNoeuds[0, 1];
 
+                //On designe le dernier noeud comme noeudCourant
+                noeudCourant = tableauNoeuds[1, 0];
             }
             //right
             else
@@ -172,8 +175,10 @@ namespace INF1008
 
                 //On ajoute les noeuds a leur vecteur respectifs
                 NoeudsTraite[ittr++] = tableauNoeuds[0, 1];
-                noeudCourant = tableauNoeuds[0, 1];
                 NoeudsAdjacent[itr++] = tableauNoeuds[1, 0];
+
+                //On designe le dernier noeud comme noeudCourant
+                noeudCourant = tableauNoeuds[0, 1];
             }
         }
 
@@ -181,25 +186,19 @@ namespace INF1008
 
         private void ProcessNode()
         {
+            //On recupere la position du noeudCourant
             int ligne = noeudCourant.Pos.Ligne;
             int colonne = noeudCourant.Pos.Colonne;
 
+            //On declare les variables pour contenir les valeurs des aretes pour un noeud
             int valeurAreteLeft;
             int valeurAreteRight;
             int valeurAreteUp;
             int valeurAreteDown;
 
         
-            //TODO faire les fonctions suivantes ici
-            //
-            //Si la Position du Noeud est sur la Colonne = 0 && Ligne = nbLignes, traiter RIGHT, UP
-            //Si la Position du Noeud est sur la Colonne = nbColonne && Ligne = nbLignes, traiter LEFT, UP
-            //Si la Position du Noeud est sur la Colonne = nbColonne && Ligne = 0, traiter LEFT, DOWN
-            //
-            //TODO fin
-
             //Si la Position du Noeud est sur la ligne = 0
-            if (ligne == 0)
+            if (ligne == 0 && colonne != 0 && colonne != nbColonnes - 1)
             {
                 //On va chercher la valeur des aretes adjacentes
                 valeurAreteRight = tableauHorizontal[ligne, colonne];
@@ -251,12 +250,12 @@ namespace INF1008
             }
 
             //Si la Position du Noeud est sur la ligne = nbLignes, traiter RIGHT, UP, LEFT
-            else if (ligne == nbLignes - 1)
+            else if (ligne == nbLignes - 1 & colonne != 0 && colonne != nbColonnes - 1)
             {
                 //On va chercher la valeur des aretes adjacentes
                 valeurAreteRight = tableauHorizontal[ligne, colonne];
-                valeurAreteUp = tableauVertical[ligne, colonne];
                 valeurAreteLeft = tableauHorizontal[ligne, colonne - 1];
+                valeurAreteUp = tableauVertical[ligne - 1, colonne];
 
                 //On verifie que les noeuds au bout de ces arretes n'ont pas deja ete visite, si oui on change la valeur de l'arete pour 33-34 ou 35
                 //Up
@@ -282,12 +281,12 @@ namespace INF1008
                 //Up
                 if (valeurAreteRight > valeurAreteUp && valeurAreteLeft > valeurAreteUp)
                 {
-                    tableauVertical[ligne - 1, colonne] = 11;
+                    tableauVertical[ligne, colonne] = 11;
                     Console.WriteLine("Position actuel: [" + ligne + "," + colonne + "]\n");
                     ligne = ligne - 1;
                 }
                 //right
-                else if (valeurAreteRight < valeurAreteUp && valeurAreteRight < valeurAreteLeft)
+                else if (valeurAreteRight < valeurAreteUp && valeurAreteRight < valeurAreteUp)
                 {
                     tableauHorizontal[ligne, colonne] = 11;
                     Console.WriteLine("Position actuel: [" + ligne + "," + colonne + "]\n");
@@ -300,22 +299,257 @@ namespace INF1008
                     Console.WriteLine("Position actuel: [" + ligne + "," + colonne + "]\n");
                     colonne = colonne - 1;
                 }
-            }
-            //Si la Position du Noeud est sur la Colonne = 0, traiter RIGHT, UP, DOWN
-            else if (colonne == 0)
-            {
 
+            }
+            
+            
+            //Si la Position du Noeud est sur la Colonne = 0, traiter RIGHT, UP, DOWN
+            else if (colonne == 0 && ligne != 0 && ligne != nbLignes - 1)
+            {
+                //On va chercher la valeur des aretes adjacentes
+                valeurAreteRight = tableauHorizontal[ligne, colonne];
+                valeurAreteDown = tableauVertical[ligne, colonne];
+                valeurAreteUp = tableauVertical[ligne - 1, colonne];
+
+                //On verifie que les noeuds au bout de ces arretes n'ont pas deja ete visite, si oui on change la valeur de l'arete pour 33-34 ou 35
+                //Up
+                if (tableauNoeuds[ligne - 1, colonne].Permanent == true)
+                {
+                    if (tableauVertical[ligne - 1, colonne] != 11)
+                        tableauVertical[ligne - 1, colonne] = 33;
+                }
+                //Right
+                else if (tableauNoeuds[ligne, colonne + 1].Permanent == true)
+                {
+                    if (tableauHorizontal[ligne, colonne] != 11)
+                        tableauHorizontal[ligne, colonne] = 34;
+                }
+                //Down
+                if (tableauNoeuds[ligne + 1, colonne].Permanent == true)
+                {
+                    if (tableauVertical[ligne, colonne] != 11)
+                        tableauVertical[ligne, colonne] = 33;
+                }
+
+                //On verifie l'arete la plus courte, on change la valeur de l'arete la plus courte pour 11, on ajuste la position de result.
+                //Up
+                if (valeurAreteRight > valeurAreteUp && valeurAreteDown > valeurAreteUp)
+                {
+                    tableauVertical[ligne - 1, colonne] = 11;
+                    Console.WriteLine("Position actuel: [" + ligne + "," + colonne + "]\n");
+                    ligne = ligne - 1;
+                }
+                //right
+                else if (valeurAreteRight < valeurAreteUp && valeurAreteRight < valeurAreteDown)
+                {
+                    tableauHorizontal[ligne, colonne] = 11;
+                    Console.WriteLine("Position actuel: [" + ligne + "," + colonne + "]\n");
+                    colonne = colonne + 1;
+                }
+                //Down
+                else
+                {
+                    tableauVertical[ligne, colonne] = 11;
+                    Console.WriteLine("Position actuel: [" + ligne + "," + colonne + "]\n");
+                    ligne = ligne + 1;
+                }
             }
             //Si la Position du Noeud est sur la Colonne = nbColonnes, traiter LEFT, UP, DOWN
-            else if (colonne == nbColonnes - 1)
+            else if (colonne == nbColonnes - 1 && ligne != 0 && ligne != nbLignes - 1)
             {
+                //On va chercher la valeur des aretes adjacentes
+                valeurAreteLeft = tableauHorizontal[ligne, colonne - 1];
+                valeurAreteUp = tableauVertical[ligne - 1, colonne];
+                valeurAreteDown = tableauVertical[ligne, colonne];
 
+                //On verifie que les noeuds au bout de ces arretes n'ont pas deja ete visite, si oui on change la valeur de l'arete pour 33-34 ou 35
+                //Down
+                if (tableauNoeuds[ligne + 1, colonne].Permanent == true)
+                {
+                    if (tableauVertical[ligne, colonne] != 11)
+                        tableauVertical[ligne, colonne] = 33;
+                }
+                //Up
+                if (tableauNoeuds[ligne - 1, colonne].Permanent == true)
+                {
+                    if (tableauVertical[ligne - 1, colonne] != 11)
+                        tableauVertical[ligne - 1, colonne] = 33;
+                }
+                //Left
+                else if (tableauNoeuds[ligne, colonne - 1].Permanent == true)
+                {
+                    if (tableauHorizontal[ligne, colonne - 1] != 11)
+                        tableauHorizontal[ligne, colonne - 1] = 35;
+                }
+
+                //On verifie l'arete la plus courte, on change la valeur de l'arete la plus courte pour 11, on ajuste la position de result.
+                //down
+                if (valeurAreteUp > valeurAreteDown && valeurAreteLeft > valeurAreteDown)
+                {
+                    tableauVertical[ligne, colonne] = 11;
+                    Console.WriteLine("Position actuel: [" + ligne + "," + colonne + "]\n");
+                    ligne = ligne + 1;
+                }
+                //up
+                else if (valeurAreteUp < valeurAreteDown && valeurAreteUp < valeurAreteLeft)
+                {
+                    tableauVertical[ligne - 1, colonne] = 11;
+                    Console.WriteLine("Position actuel: [" + ligne + "," + colonne + "]\n");
+                    ligne = ligne - 1;
+                }
+                //left
+                else
+                {
+                    tableauHorizontal[ligne, colonne] = 11;
+                    Console.WriteLine("Position actuel: [" + ligne + "," + colonne + "]\n");
+                    colonne = colonne - 1;
+                }
+            }
+            //Si la Position du Noeud est sur la Colonne = nbColonne && Ligne = 0, traiter LEFT, DOWN
+            else if (colonne == nbColonnes - 1 && ligne == 0)
+            {
+                //On va chercher la valeur des aretes adjacentes
+                valeurAreteLeft = tableauHorizontal[ligne, colonne - 1];
+                valeurAreteDown = tableauVertical[ligne, colonne];
+
+                //On verifie que les noeuds au bout de ces arretes n'ont pas deja ete visite, si oui on change la valeur de l'arete pour 33-34 ou 35
+                //Down
+                if (tableauNoeuds[ligne + 1, colonne].Permanent == true)
+                {
+                    if (tableauVertical[ligne, colonne] != 11)
+                        tableauVertical[ligne, colonne] = 33;
+                }
+                //Left
+                else if (tableauNoeuds[ligne, colonne - 1].Permanent == true)
+                {
+                    if (tableauHorizontal[ligne, colonne - 1] != 11)
+                        tableauHorizontal[ligne, colonne - 1] = 35;
+                }
+
+                //On verifie l'arete la plus courte, on change la valeur de l'arete la plus courte pour 11, on ajuste la position de result.
+                //down
+                if (valeurAreteLeft > valeurAreteDown)
+                {
+                    tableauVertical[ligne, colonne] = 11;
+                    Console.WriteLine("Position actuel: [" + ligne + "," + colonne + "]\n");
+                    ligne = ligne + 1;
+                }
+                //left
+                else
+                {
+                    tableauHorizontal[ligne, colonne] = 11;
+                    Console.WriteLine("Position actuel: [" + ligne + "," + colonne + "]\n");
+                    colonne = colonne - 1;
+                }
+            }
+            //Si la Position du Noeud est sur la Colonne = nbColonne && Ligne = nbLignes, traiter LEFT, UP
+            else if (colonne == nbColonnes - 1 && ligne == nbLignes - 1)
+            {
+                valeurAreteLeft = tableauHorizontal[ligne, colonne - 1];
+                valeurAreteUp = tableauVertical[ligne - 1, colonne];
+
+                //On verifie que les noeuds au bout de ces arretes n'ont pas deja ete visite, si oui on change la valeur de l'arete pour 33-34 ou 35
+                //Up
+                if (tableauNoeuds[ligne - 1, colonne].Permanent == true)
+                {
+                    if (tableauVertical[ligne - 1, colonne] != 11)
+                        tableauVertical[ligne - 1, colonne] = 33;
+                }
+                //Left
+                else if (tableauNoeuds[ligne, colonne - 1].Permanent == true)
+                {
+                    if (tableauHorizontal[ligne, colonne - 1] != 11)
+                        tableauHorizontal[ligne, colonne - 1] = 35;
+                }
+
+                //On verifie l'arete la plus courte, on change la valeur de l'arete la plus courte pour 11, on ajuste la position de result.
+                //up
+                if (valeurAreteUp < valeurAreteLeft)
+                {
+                    tableauVertical[ligne - 1, colonne] = 11;
+                    Console.WriteLine("Position actuel: [" + ligne + "," + colonne + "]\n");
+                    ligne = ligne - 1;
+                }
+                //left
+                else
+                {
+                    tableauHorizontal[ligne, colonne] = 11;
+                    Console.WriteLine("Position actuel: [" + ligne + "," + colonne + "]\n");
+                    colonne = colonne - 1;
+                }
+            }
+            //Si la Position du Noeud est sur la Colonne = 0 && Ligne = nbLignes, traiter RIGHT, UP
+            else if (colonne == 0 && ligne == nbLignes - 1)
+            {
+                //On va chercher la valeur des aretes adjacentes
+                valeurAreteRight = tableauHorizontal[ligne, colonne];
+                valeurAreteUp = tableauVertical[ligne - 1, colonne];
+                //On verifie que les noeuds au bout de ces arretes n'ont pas deja ete visite, si oui on change la valeur de l'arete pour 33-34 ou 35
+                //Up
+                if (tableauNoeuds[ligne - 1, colonne].Permanent == true)
+                {
+                    if (tableauVertical[ligne - 1, colonne] != 11)
+                        tableauVertical[ligne - 1, colonne] = 33;
+                }
+                //Right
+                else if (tableauNoeuds[ligne, colonne + 1].Permanent == true)
+                {
+                    if (tableauHorizontal[ligne, colonne] != 11)
+                        tableauHorizontal[ligne, colonne] = 34;
+                }
+
+                //On verifie l'arete la plus courte, on change la valeur de l'arete la plus courte pour 11, on ajuste la position de result.
+                //Up
+                if (valeurAreteRight > valeurAreteUp)
+                {
+                    tableauVertical[ligne - 1, colonne] = 11;
+                    Console.WriteLine("Position actuel: [" + ligne + "," + colonne + "]\n");
+                    ligne = ligne - 1;
+                }
+                //right
+                else
+                {
+                    tableauHorizontal[ligne, colonne] = 11;
+                    Console.WriteLine("Position actuel: [" + ligne + "," + colonne + "]\n");
+                    colonne = colonne + 1;
+                }
             }
             //Est au centre, les 4 directions sont a prendre en compte
             else
             {
+                //On va chercher la valeur des aretes adjacentes
+                valeurAreteRight = tableauHorizontal[ligne, colonne];
+                valeurAreteLeft = tableauHorizontal[ligne, colonne - 1];
+                valeurAreteUp = tableauVertical[ligne - 1, colonne];
+                valeurAreteDown = tableauVertical[ligne, colonne];
 
+                //On verifie que les noeuds au bout de ces arretes n'ont pas deja ete visite, si oui on change la valeur de l'arete pour 33-34 ou 35
+                //Down
+                if (tableauNoeuds[ligne + 1, colonne].Permanent == true)
+                {
+                    if (tableauVertical[ligne, colonne] != 11)
+                        tableauVertical[ligne, colonne] = 33;
+                }
+                //Up
+                if (tableauNoeuds[ligne - 1, colonne].Permanent == true)
+                {
+                    if (tableauVertical[ligne - 1, colonne] != 11)
+                        tableauVertical[ligne - 1, colonne] = 33;
+                }
+                //Right
+                else if (tableauNoeuds[ligne, colonne + 1].Permanent == true)
+                {
+                    if (tableauHorizontal[ligne, colonne] != 11)
+                        tableauHorizontal[ligne, colonne] = 34;
+                }
+                //Left
+                else if (tableauNoeuds[ligne, colonne - 1].Permanent == true)
+                {
+                    if (tableauHorizontal[ligne, colonne - 1] != 11)
+                        tableauHorizontal[ligne, colonne - 1] = 35;
+                }
             }
+
 
             //TODO  Parcourrir le vecteur des NoeudsAdjacent pour trouver la plus petite arete du graphe qui pointe vers un noeud non visiter
             //      changer la valeur pour 11 de cet arrete dans le tableau correspondant Vertical ou Horizontal et se positionner le noeudCourant
@@ -327,9 +561,8 @@ namespace INF1008
             NoeudsTraite[itr++] = tableauNoeuds[ligne, colonne];
             itr++;
 
-            ProcessLine = ligne;
-            ProcessColumn = colonne;
-
+            //Mettre le noeud comme noeudCourant
+            noeudCourant = tableauNoeuds[ligne, colonne];
 
             for (int i = 0; i < itr; i++)
             {
