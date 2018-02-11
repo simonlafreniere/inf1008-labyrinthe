@@ -86,7 +86,7 @@ namespace INF1008
                         Pos = position,
                         Permanent = false,
                         Predecesseur = -1,
-                        Poids = 999,
+                        Poids = 99,
                         Direction = null
                     };
 
@@ -181,7 +181,18 @@ namespace INF1008
             int ligne = noeudCourant.Pos.Ligne;
             int colonne = noeudCourant.Pos.Colonne;
 
-            //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
+            if (tableauNoeuds[ligne + 1, colonne].Poids != 99)
+            {
+                for (int i = 0; i < itr; i++)
+                {
+                    if (NoeudsAdjacent.ElementAt(i).Pos.Ligne == ligne + 1 && NoeudsAdjacent.ElementAt(i).Pos.Colonne == colonne)
+                    {
+                        NoeudsAdjacent.RemoveAt(i);
+                    }
+                }
+            }
+
+            //On ajuste les parametres du noeud adjacent
             tableauNoeuds[ligne + 1, colonne].Poids = tableauVertical[ligne, colonne];
             tableauNoeuds[ligne + 1, colonne].Direction = "down";
             tableauNoeuds[ligne + 1, colonne].Predecesseur = ittr - 1;
@@ -197,7 +208,18 @@ namespace INF1008
             int ligne = noeudCourant.Pos.Ligne;
             int colonne = noeudCourant.Pos.Colonne;
 
-            //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
+            if (tableauNoeuds[ligne - 1, colonne].Poids != 99)
+            {
+                for (int i = 0; i < itr; i++)
+                {
+                    if (NoeudsAdjacent.ElementAt(i).Pos.Ligne == ligne - 1 && NoeudsAdjacent.ElementAt(i).Pos.Colonne == colonne)
+                    {
+                        NoeudsAdjacent.RemoveAt(i);
+                    }
+                }
+            }
+
+            //On ajuste les parametres du noeud adjacent
             tableauNoeuds[ligne - 1, colonne].Poids = tableauVertical[ligne - 1, colonne];
             tableauNoeuds[ligne - 1, colonne].Direction = "up";
             tableauNoeuds[ligne - 1, colonne].Predecesseur = ittr - 1;
@@ -213,7 +235,18 @@ namespace INF1008
             int ligne = noeudCourant.Pos.Ligne;
             int colonne = noeudCourant.Pos.Colonne;
 
-            //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
+            if (tableauNoeuds[ligne, colonne + 1].Poids != 99)
+            {
+                for (int i = 0; i < itr; i++)
+                {
+                    if (NoeudsAdjacent.ElementAt(i).Pos.Ligne == ligne && NoeudsAdjacent.ElementAt(i).Pos.Colonne == colonne + 1)
+                    {
+                        NoeudsAdjacent.RemoveAt(i);
+                    }
+                }
+            }
+
+            //On ajuste les parametres du noeud adjacent
             tableauNoeuds[ligne, colonne + 1].Poids = tableauHorizontal[ligne, colonne];
             tableauNoeuds[ligne, colonne + 1].Direction = "right";
             tableauNoeuds[ligne, colonne + 1].Predecesseur = ittr - 1;
@@ -229,7 +262,18 @@ namespace INF1008
             int ligne = noeudCourant.Pos.Ligne;
             int colonne = noeudCourant.Pos.Colonne;
 
-            //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
+            if (tableauNoeuds[ligne, colonne - 1].Poids != 99)
+            {
+                for (int i = 0; i < itr; i++)
+                {
+                    if (NoeudsAdjacent.ElementAt(i).Pos.Ligne == ligne && NoeudsAdjacent.ElementAt(i).Pos.Colonne == colonne - 1)
+                    {
+                        NoeudsAdjacent.RemoveAt(i);
+                    }
+                }
+            }
+
+            //On ajuste les parametres du noeud adjacent
             tableauNoeuds[ligne, colonne - 1].Poids = tableauHorizontal[ligne, colonne - 1];
             tableauNoeuds[ligne, colonne - 1].Direction = "left";
             tableauNoeuds[ligne, colonne - 1].Predecesseur = ittr - 1;
@@ -238,6 +282,7 @@ namespace INF1008
             NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne - 1]);
             itr++;
         }
+
             private void TrouverAdjacent()
         {
             Console.WriteLine("step");
