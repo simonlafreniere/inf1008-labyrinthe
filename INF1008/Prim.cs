@@ -51,6 +51,7 @@ namespace INF1008
             tableauNoeuds = new Noeud[nbLignes, nbColonnes];
 
             Random rnd = new Random();
+            Console.WriteLine("Horizontal:");
             for (int i = 0; i < nbLignes; i++)
             {
                 for (int j = 0; j < nbColonnes - 1; j++)
@@ -60,6 +61,7 @@ namespace INF1008
                 }
             }
             Console.WriteLine("");//debug
+            Console.WriteLine("Vertical:");
             for (int i = 0; i < nbLignes - 1; i++)
             {
                 for (int j = 0; j < nbColonnes; j++)
@@ -135,7 +137,7 @@ namespace INF1008
 
                 //On ajuste les parametres du noeud adjacent restant au noeud de depart
                 tableauNoeuds[0, 1].Predecesseur = 0;
-                tableauNoeuds[0, 1].Direction = "Horizontal";
+                tableauNoeuds[0, 1].Direction = "right";
                 tableauNoeuds[0, 1].Poids = tableauHorizontal[0, 0];
 
                 //On change la valeur de l'arete la plus courte pour '11'
@@ -158,7 +160,7 @@ namespace INF1008
 
                 //On ajuste les parametres du noeud adjacent restant au noeud de depart
                 tableauNoeuds[1, 0].Poids = tableauVertical[0, 0];
-                tableauNoeuds[1, 0].Direction = "Vertical";
+                tableauNoeuds[1, 0].Direction = "down";
                 tableauNoeuds[1, 0].Predecesseur = 0;
 
                 //On change la valeur de l'arete la plus courte pour '11'
@@ -173,9 +175,70 @@ namespace INF1008
             }
         }
 
+        private void AddDown()
+        {
+            //On recupere la position du noeudCourant
+            int ligne = noeudCourant.Pos.Ligne;
+            int colonne = noeudCourant.Pos.Colonne;
 
+            //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
+            tableauNoeuds[ligne + 1, colonne].Poids = tableauVertical[ligne, colonne];
+            tableauNoeuds[ligne + 1, colonne].Direction = "down";
+            tableauNoeuds[ligne + 1, colonne].Predecesseur = ittr - 1;
 
-        private void TrouverAdjacent()
+            //On ajoute le noeud au tableau NoeudsAdjacent
+            NoeudsAdjacent.Add(tableauNoeuds[ligne + 1, colonne]);
+            itr++;
+        }
+
+        private void AddUp()
+        {
+            //On recupere la position du noeudCourant
+            int ligne = noeudCourant.Pos.Ligne;
+            int colonne = noeudCourant.Pos.Colonne;
+
+            //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
+            tableauNoeuds[ligne - 1, colonne].Poids = tableauVertical[ligne - 1, colonne];
+            tableauNoeuds[ligne - 1, colonne].Direction = "up";
+            tableauNoeuds[ligne - 1, colonne].Predecesseur = ittr - 1;
+
+            //On ajoute le noeud au tableau NoeudsAdjacent
+            NoeudsAdjacent.Add(tableauNoeuds[ligne - 1, colonne]);
+            itr++;
+        }
+
+        private void AddRight()
+        {
+            //On recupere la position du noeudCourant
+            int ligne = noeudCourant.Pos.Ligne;
+            int colonne = noeudCourant.Pos.Colonne;
+
+            //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
+            tableauNoeuds[ligne, colonne + 1].Poids = tableauHorizontal[ligne, colonne];
+            tableauNoeuds[ligne, colonne + 1].Direction = "right";
+            tableauNoeuds[ligne, colonne + 1].Predecesseur = ittr - 1;
+
+            //On ajoute le noeud au tableau NoeudsAdjacent
+            NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne + 1]);
+            itr++;
+        }
+
+        private void AddLeft()
+        {
+            //On recupere la position du noeudCourant
+            int ligne = noeudCourant.Pos.Ligne;
+            int colonne = noeudCourant.Pos.Colonne;
+
+            //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
+            tableauNoeuds[ligne, colonne - 1].Poids = tableauHorizontal[ligne, colonne - 1];
+            tableauNoeuds[ligne, colonne - 1].Direction = "left";
+            tableauNoeuds[ligne, colonne - 1].Predecesseur = ittr - 1;
+
+            //On ajoute le noeud au tableau NoeudsAdjacent
+            NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne - 1]);
+            itr++;
+        }
+            private void TrouverAdjacent()
         {
             Console.WriteLine("step");
             //On recupere la position du noeudCourant
@@ -189,40 +252,19 @@ namespace INF1008
                 //Down
                 if (tableauNoeuds[ligne + 1, colonne].Permanent == false && tableauNoeuds[ligne + 1, colonne].Poids > tableauVertical[ligne, colonne])
                 {
-                        //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                        tableauNoeuds[ligne + 1, colonne].Poids = tableauVertical[ligne, colonne];
-                    tableauNoeuds[ligne + 1, colonne].Direction = "down";
-                    tableauNoeuds[ligne + 1, colonne].Predecesseur = ittr - 1;
-
-                    //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent.Add(tableauNoeuds[ligne + 1, colonne]);
-                    itr++;
+                    AddDown();
                 }
 
                 //Right
                 if (tableauNoeuds[ligne, colonne + 1].Permanent == false && tableauNoeuds[ligne, colonne + 1].Poids > tableauHorizontal[ligne, colonne])
                 {
-                    //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                    tableauNoeuds[ligne, colonne + 1].Poids = tableauHorizontal[ligne, colonne];
-                    tableauNoeuds[ligne, colonne + 1].Direction = "right";
-                    tableauNoeuds[ligne, colonne + 1].Predecesseur = ittr - 1;
-
-                    //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne + 1]);
-                    itr++;
-
+                    AddRight();             
                 }
 
                 //Left
                 if (tableauNoeuds[ligne, colonne - 1].Permanent == false && tableauNoeuds[ligne, colonne - 1].Poids > tableauHorizontal[ligne, colonne - 1])
                 {
-                    //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                    tableauNoeuds[ligne, colonne - 1].Poids = tableauHorizontal[ligne, colonne - 1];
-                    tableauNoeuds[ligne, colonne - 1].Direction = "left";
-                    tableauNoeuds[ligne, colonne - 1].Predecesseur = ittr - 1;
-
-                    //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne - 1]);
+                    AddLeft();
                 }
             }
 
@@ -233,40 +275,19 @@ namespace INF1008
                 //Up
                 if (tableauNoeuds[ligne - 1, colonne].Permanent == false && tableauNoeuds[ligne - 1, colonne].Poids > tableauVertical[ligne - 1, colonne])
                 {
-                    //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                    tableauNoeuds[ligne - 1, colonne].Poids = tableauVertical[ligne - 1, colonne];
-                    tableauNoeuds[ligne - 1, colonne].Direction = "up";
-                    tableauNoeuds[ligne - 1, colonne].Predecesseur = ittr - 1;
-
-                    //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent.Add(tableauNoeuds[ligne - 1, colonne]);
+                    AddUp();
                 }
 
                 //Right
                 if (tableauNoeuds[ligne, colonne + 1].Permanent == false && tableauNoeuds[ligne, colonne + 1].Poids > tableauHorizontal[ligne, colonne])
                 {
-                    //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                    tableauNoeuds[ligne, colonne + 1].Poids = tableauHorizontal[ligne, colonne];
-                    tableauNoeuds[ligne, colonne + 1].Direction = "right";
-                    tableauNoeuds[ligne, colonne + 1].Predecesseur = ittr - 1;
-
-                    //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne + 1]);
-                    itr++;
-
+                    AddRight();
                 }
 
                 //Left
                 if (tableauNoeuds[ligne, colonne - 1].Permanent == false && tableauNoeuds[ligne, colonne - 1].Poids > tableauHorizontal[ligne, colonne - 1])
                 {
-                    //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                    tableauNoeuds[ligne, colonne - 1].Poids = tableauHorizontal[ligne, colonne - 1];
-                    tableauNoeuds[ligne, colonne - 1].Direction = "left";
-                    tableauNoeuds[ligne, colonne - 1].Predecesseur = ittr - 1;
-
-                    //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne - 1]);
-                    itr++;
+                    AddLeft();
                 }
             }
 
@@ -277,39 +298,19 @@ namespace INF1008
                 //Up
                 if (tableauNoeuds[ligne - 1, colonne].Permanent == false && tableauNoeuds[ligne - 1, colonne].Poids > tableauVertical[ligne - 1, colonne])
                 {
-                    //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                    tableauNoeuds[ligne - 1, colonne].Poids = tableauVertical[ligne - 1, colonne];
-                    tableauNoeuds[ligne - 1, colonne].Direction = "up";
-                    tableauNoeuds[ligne - 1, colonne].Predecesseur = ittr - 1;
-
-                    //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent.Add(tableauNoeuds[ligne - 1, colonne]);
-                    itr++;
+                    AddUp();
                 }
 
                 //Right
                 if (tableauNoeuds[ligne, colonne + 1].Permanent == false && tableauNoeuds[ligne, colonne + 1].Poids > tableauHorizontal[ligne, colonne])
                 {
-                    //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                    tableauNoeuds[ligne, colonne + 1].Poids = tableauHorizontal[ligne, colonne];
-                    tableauNoeuds[ligne, colonne + 1].Direction = "right";
-                    tableauNoeuds[ligne, colonne + 1].Predecesseur = ittr - 1;
-
-                    //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne + 1]);
-                    itr++;
+                    AddRight();
                 }
 
                 //Down
                 if (tableauNoeuds[ligne + 1, colonne].Permanent == false && tableauNoeuds[ligne + 1, colonne].Poids > tableauVertical[ligne, colonne])
                 {
-                    //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                    tableauNoeuds[ligne + 1, colonne].Poids = tableauVertical[ligne, colonne];
-                    tableauNoeuds[ligne + 1, colonne].Direction = "down";
-                    tableauNoeuds[ligne + 1, colonne].Predecesseur = ittr - 1;
-
-                    //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent.Add(tableauNoeuds[ligne + 1, colonne]);
+                    AddDown();
                 }
             }
 
@@ -318,42 +319,21 @@ namespace INF1008
             {
                 //On verifie si les noeuds au bout de ces arretes sont permanent, si non on ajoute les noeuds au tableau noeudsAdjacent
                 //Down
-                if (tableauNoeuds[ligne + 1, colonne].Permanent == false)
+                if (tableauNoeuds[ligne + 1, colonne].Permanent == false && tableauNoeuds[ligne + 1, colonne].Poids > tableauVertical[ligne, colonne])
                 {
-                    //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                    tableauNoeuds[ligne + 1, colonne].Poids = tableauVertical[ligne, colonne];
-                    tableauNoeuds[ligne + 1, colonne].Direction = "down";
-                    tableauNoeuds[ligne + 1, colonne].Predecesseur = ittr - 1;
-
-                    //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent.Add(tableauNoeuds[ligne + 1, colonne]);
-                    itr++;
+                    AddDown();
                 }
 
                 //Up
                 if (tableauNoeuds[ligne - 1, colonne].Permanent == false && tableauNoeuds[ligne - 1, colonne].Poids > tableauVertical[ligne - 1, colonne])
                 {
-                    //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                    tableauNoeuds[ligne - 1, colonne].Poids = tableauVertical[ligne - 1, colonne];
-                    tableauNoeuds[ligne - 1, colonne].Direction = "up";
-                    tableauNoeuds[ligne - 1, colonne].Predecesseur = ittr - 1;
-
-                    //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent.Add(tableauNoeuds[ligne - 1, colonne]);
-                    itr++;
+                    AddUp();
                 }
 
                 //Left
                 if (tableauNoeuds[ligne, colonne - 1].Permanent == false && tableauNoeuds[ligne, colonne - 1].Poids > tableauHorizontal[ligne, colonne - 1])
                 {
-                    //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                    tableauNoeuds[ligne, colonne - 1].Poids = tableauHorizontal[ligne, colonne - 1];
-                    tableauNoeuds[ligne, colonne - 1].Direction = "left";
-                    tableauNoeuds[ligne, colonne - 1].Predecesseur = ittr - 1;
-
-                    //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne - 1]);
-                    itr++;
+                    AddLeft();
                 }
             }
 
@@ -364,27 +344,13 @@ namespace INF1008
                 //Down
                 if (tableauNoeuds[ligne + 1, colonne].Permanent == false && tableauNoeuds[ligne + 1, colonne].Poids > tableauVertical[ligne, colonne])
                 {
-                    //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                    tableauNoeuds[ligne + 1, colonne].Poids = tableauVertical[ligne, colonne];
-                    tableauNoeuds[ligne + 1, colonne].Direction = "down";
-                    tableauNoeuds[ligne + 1, colonne].Predecesseur = ittr - 1;
-
-                    //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent.Add(tableauNoeuds[ligne + 1, colonne]);
-                    itr++;
+                    AddDown();
                 }
 
                 //Left
                 if (tableauNoeuds[ligne, colonne - 1].Permanent == false && tableauNoeuds[ligne, colonne - 1].Poids > tableauHorizontal[ligne, colonne - 1])
                 {
-                    //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                    tableauNoeuds[ligne, colonne - 1].Poids = tableauHorizontal[ligne, colonne - 1];
-                    tableauNoeuds[ligne, colonne - 1].Direction = "left";
-                    tableauNoeuds[ligne, colonne - 1].Predecesseur = ittr - 1;
-
-                    //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne - 1]);
-                    itr++;
+                    AddLeft();
                 }
             }
 
@@ -395,27 +361,13 @@ namespace INF1008
                 //Up
                 if (tableauNoeuds[ligne - 1, colonne].Permanent == false && tableauNoeuds[ligne - 1, colonne].Poids > tableauVertical[ligne - 1, colonne])
                 {
-                    //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                    tableauNoeuds[ligne - 1, colonne].Poids = tableauVertical[ligne - 1, colonne];
-                    tableauNoeuds[ligne - 1, colonne].Direction = "up";
-                    tableauNoeuds[ligne - 1, colonne].Predecesseur = ittr - 1;
-
-                    //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent.Add(tableauNoeuds[ligne - 1, colonne]);
-                    itr++;
+                    AddUp();
                 }
 
                 //Left
                 if (tableauNoeuds[ligne, colonne - 1].Permanent == false && tableauNoeuds[ligne, colonne - 1].Poids > tableauHorizontal[ligne, colonne - 1])
                 {
-                    //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                    tableauNoeuds[ligne, colonne - 1].Poids = tableauHorizontal[ligne, colonne - 1];
-                    tableauNoeuds[ligne, colonne - 1].Direction = "left";
-                    tableauNoeuds[ligne, colonne - 1].Predecesseur = ittr - 1;
-
-                    //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne - 1]);
-                    itr++;
+                    AddLeft();
                 }
             }
             //Si la Position du Noeud est sur la Colonne = 0 && Ligne = nbLignes, traiter RIGHT, UP
@@ -425,27 +377,13 @@ namespace INF1008
                 //Up
                 if (tableauNoeuds[ligne - 1, colonne].Permanent == false && tableauNoeuds[ligne - 1, colonne].Poids > tableauVertical[ligne - 1, colonne])
                 {
-                    //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                    tableauNoeuds[ligne - 1, colonne].Poids = tableauVertical[ligne - 1, colonne];
-                    tableauNoeuds[ligne - 1, colonne].Direction = "up";
-                    tableauNoeuds[ligne - 1, colonne].Predecesseur = ittr - 1;
-
-                    //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent.Add(tableauNoeuds[ligne - 1, colonne]);
-                    itr++;
+                    AddUp();
                 }
 
                 //Right
                 if (tableauNoeuds[ligne, colonne + 1].Permanent == false && tableauNoeuds[ligne, colonne + 1].Poids > tableauHorizontal[ligne, colonne])
                 {
-                    //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                    tableauNoeuds[ligne, colonne + 1].Poids = tableauHorizontal[ligne, colonne];
-                    tableauNoeuds[ligne, colonne + 1].Direction = "right";
-                    tableauNoeuds[ligne, colonne + 1].Predecesseur = ittr - 1;
-
-                    //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne + 1]);
-                    itr++;
+                    AddRight();
                 }
             }
             //Est au centre, les 4 directions sont a prendre en compte
@@ -455,59 +393,32 @@ namespace INF1008
                 //Down
                 if (tableauNoeuds[ligne + 1, colonne].Permanent == false && tableauNoeuds[ligne + 1, colonne].Poids > tableauVertical[ligne, colonne])
                 {
-                    //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                    tableauNoeuds[ligne + 1, colonne].Poids = tableauVertical[ligne, colonne];
-                    tableauNoeuds[ligne + 1, colonne].Direction = "down";
-                    tableauNoeuds[ligne + 1, colonne].Predecesseur = ittr - 1;
-
-                    //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent.Add(tableauNoeuds[ligne + 1, colonne]);
-                    itr++;
+                    AddDown();
                 }
 
                 //Up
                 if (tableauNoeuds[ligne - 1, colonne].Permanent == false && tableauNoeuds[ligne - 1, colonne].Poids > tableauVertical[ligne - 1, colonne])
                 {
-                    //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                    tableauNoeuds[ligne - 1, colonne].Poids = tableauVertical[ligne - 1, colonne];
-                    tableauNoeuds[ligne - 1, colonne].Direction = "up";
-                    tableauNoeuds[ligne - 1, colonne].Predecesseur = ittr - 1;
-
-                    //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent.Add(tableauNoeuds[ligne - 1, colonne]);
-                    itr++;
+                    AddUp();
                 }
 
                 //Right
                 if (tableauNoeuds[ligne, colonne + 1].Permanent == false && tableauNoeuds[ligne, colonne + 1].Poids > tableauHorizontal[ligne, colonne])
                 {
-                    //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                    tableauNoeuds[ligne, colonne + 1].Poids = tableauHorizontal[ligne, colonne];
-                    tableauNoeuds[ligne, colonne + 1].Direction = "right";
-                    tableauNoeuds[ligne, colonne + 1].Predecesseur = ittr - 1;
-
-                    //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne + 1]);
-                    itr++;
+                    AddRight();
                 }
 
                 //Left
                 if (tableauNoeuds[ligne, colonne - 1].Permanent == false && tableauNoeuds[ligne, colonne - 1].Poids > tableauHorizontal[ligne, colonne - 1])
                 {
-                    //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                    tableauNoeuds[ligne, colonne - 1].Poids = tableauHorizontal[ligne, colonne - 1];
-                    tableauNoeuds[ligne, colonne - 1].Direction = "left";
-                    tableauNoeuds[ligne, colonne - 1].Predecesseur = ittr - 1;
-
-                    //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne - 1]);
-                    itr++;
+                    AddLeft();
                 }
 
             }
 
             // Parcourrir le vecteur des NoeudsAdjacent pour trouver la plus petite arete
             int ValeurAreteMin = 99;
+            //index du plus noeud avec le plus petit poids
             int indexNoeud = 0;
             for(int i = 0; i < itr; i++)
             {
