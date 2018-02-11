@@ -187,10 +187,10 @@ namespace INF1008
             {
                 //On verifie si les noeuds au bout de ces arretes sont permanent, si non on ajoute les noeuds au tableau noeudsAdjacent
                 //Down
-                if (tableauNoeuds[ligne + 1, colonne].Permanent == false)
+                if (tableauNoeuds[ligne + 1, colonne].Permanent == false && tableauNoeuds[ligne + 1, colonne].Poids > tableauVertical[ligne, colonne])
                 {
-                    //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
-                    tableauNoeuds[ligne + 1, colonne].Poids = tableauVertical[ligne, colonne];
+                        //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
+                        tableauNoeuds[ligne + 1, colonne].Poids = tableauVertical[ligne, colonne];
                     tableauNoeuds[ligne + 1, colonne].Direction = "down";
                     tableauNoeuds[ligne + 1, colonne].Predecesseur = ittr - 1;
 
@@ -200,7 +200,7 @@ namespace INF1008
                 }
 
                 //Right
-                if (tableauNoeuds[ligne, colonne + 1].Permanent == false)
+                if (tableauNoeuds[ligne, colonne + 1].Permanent == false && tableauNoeuds[ligne, colonne + 1].Poids > tableauHorizontal[ligne, colonne])
                 {
                     //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
                     tableauNoeuds[ligne, colonne + 1].Poids = tableauHorizontal[ligne, colonne];
@@ -214,7 +214,7 @@ namespace INF1008
                 }
 
                 //Left
-                if (tableauNoeuds[ligne, colonne - 1].Permanent == false)
+                if (tableauNoeuds[ligne, colonne - 1].Permanent == false && tableauNoeuds[ligne, colonne - 1].Poids > tableauHorizontal[ligne, colonne - 1])
                 {
                     //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
                     tableauNoeuds[ligne, colonne - 1].Poids = tableauHorizontal[ligne, colonne - 1];
@@ -231,7 +231,7 @@ namespace INF1008
             {
                 //On verifie si les noeuds au bout de ces arretes sont permanent, si non on ajoute les noeuds au tableau noeudsAdjacent
                 //Up
-                if (tableauNoeuds[ligne - 1, colonne].Permanent == false)
+                if (tableauNoeuds[ligne - 1, colonne].Permanent == false && tableauNoeuds[ligne - 1, colonne].Poids > tableauVertical[ligne - 1, colonne])
                 {
                     //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
                     tableauNoeuds[ligne - 1, colonne].Poids = tableauVertical[ligne - 1, colonne];
@@ -243,7 +243,7 @@ namespace INF1008
                 }
 
                 //Right
-                if (tableauNoeuds[ligne, colonne + 1].Permanent == false)
+                if (tableauNoeuds[ligne, colonne + 1].Permanent == false && tableauNoeuds[ligne, colonne + 1].Poids > tableauHorizontal[ligne, colonne])
                 {
                     //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
                     tableauNoeuds[ligne, colonne + 1].Poids = tableauHorizontal[ligne, colonne];
@@ -257,7 +257,7 @@ namespace INF1008
                 }
 
                 //Left
-                if (tableauNoeuds[ligne, colonne - 1].Permanent == false)
+                if (tableauNoeuds[ligne, colonne - 1].Permanent == false && tableauNoeuds[ligne, colonne - 1].Poids > tableauHorizontal[ligne, colonne - 1])
                 {
                     //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
                     tableauNoeuds[ligne, colonne - 1].Poids = tableauHorizontal[ligne, colonne - 1];
@@ -275,7 +275,7 @@ namespace INF1008
             {
                 //On verifie si les noeuds au bout de ces arretes sont permanent, si non on ajoute les noeuds au tableau noeudsAdjacent
                 //Up
-                if (tableauNoeuds[ligne - 1, colonne].Permanent == false)
+                if (tableauNoeuds[ligne - 1, colonne].Permanent == false && tableauNoeuds[ligne - 1, colonne].Poids > tableauVertical[ligne - 1, colonne])
                 {
                     //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
                     tableauNoeuds[ligne - 1, colonne].Poids = tableauVertical[ligne - 1, colonne];
@@ -288,7 +288,7 @@ namespace INF1008
                 }
 
                 //Right
-                if (tableauNoeuds[ligne, colonne + 1].Permanent == false)
+                if (tableauNoeuds[ligne, colonne + 1].Permanent == false && tableauNoeuds[ligne, colonne + 1].Poids > tableauHorizontal[ligne, colonne])
                 {
                     //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
                     tableauNoeuds[ligne, colonne + 1].Poids = tableauHorizontal[ligne, colonne];
@@ -301,7 +301,7 @@ namespace INF1008
                 }
 
                 //Down
-                if (tableauNoeuds[ligne + 1, colonne].Permanent == false)
+                if (tableauNoeuds[ligne + 1, colonne].Permanent == false && tableauNoeuds[ligne + 1, colonne].Poids > tableauVertical[ligne, colonne])
                 {
                     //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
                     tableauNoeuds[ligne + 1, colonne].Poids = tableauVertical[ligne, colonne];
@@ -331,7 +331,7 @@ namespace INF1008
                 }
 
                 //Up
-                if (tableauNoeuds[ligne - 1, colonne].Permanent == false)
+                if (tableauNoeuds[ligne - 1, colonne].Permanent == false && tableauNoeuds[ligne - 1, colonne].Poids > tableauVertical[ligne - 1, colonne])
                 {
                     //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
                     tableauNoeuds[ligne - 1, colonne].Poids = tableauVertical[ligne - 1, colonne];
@@ -344,7 +344,7 @@ namespace INF1008
                 }
 
                 //Left
-                if (tableauNoeuds[ligne, colonne - 1].Permanent == false)
+                if (tableauNoeuds[ligne, colonne - 1].Permanent == false && tableauNoeuds[ligne, colonne - 1].Poids > tableauHorizontal[ligne, colonne - 1])
                 {
                     //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
                     tableauNoeuds[ligne, colonne - 1].Poids = tableauHorizontal[ligne, colonne - 1];
@@ -362,7 +362,7 @@ namespace INF1008
             {
                 //On verifie si les noeuds au bout de ces arretes sont permanent, si non on ajoute les noeuds au tableau noeudsAdjacent
                 //Down
-                if (tableauNoeuds[ligne + 1, colonne].Permanent == false)
+                if (tableauNoeuds[ligne + 1, colonne].Permanent == false && tableauNoeuds[ligne + 1, colonne].Poids > tableauVertical[ligne, colonne])
                 {
                     //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
                     tableauNoeuds[ligne + 1, colonne].Poids = tableauVertical[ligne, colonne];
@@ -375,7 +375,7 @@ namespace INF1008
                 }
 
                 //Left
-                if (tableauNoeuds[ligne, colonne - 1].Permanent == false)
+                if (tableauNoeuds[ligne, colonne - 1].Permanent == false && tableauNoeuds[ligne, colonne - 1].Poids > tableauHorizontal[ligne, colonne - 1])
                 {
                     //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
                     tableauNoeuds[ligne, colonne - 1].Poids = tableauHorizontal[ligne, colonne - 1];
@@ -393,7 +393,7 @@ namespace INF1008
             {
                 //On verifie si les noeuds au bout de ces arretes sont permanent, si non on ajoute les noeuds au tableau noeudsAdjacent
                 //Up
-                if (tableauNoeuds[ligne - 1, colonne].Permanent == false)
+                if (tableauNoeuds[ligne - 1, colonne].Permanent == false && tableauNoeuds[ligne - 1, colonne].Poids > tableauVertical[ligne - 1, colonne])
                 {
                     //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
                     tableauNoeuds[ligne - 1, colonne].Poids = tableauVertical[ligne - 1, colonne];
@@ -406,7 +406,7 @@ namespace INF1008
                 }
 
                 //Left
-                if (tableauNoeuds[ligne, colonne - 1].Permanent == false)
+                if (tableauNoeuds[ligne, colonne - 1].Permanent == false && tableauNoeuds[ligne, colonne - 1].Poids > tableauHorizontal[ligne, colonne - 1])
                 {
                     //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
                     tableauNoeuds[ligne, colonne - 1].Poids = tableauHorizontal[ligne, colonne - 1];
@@ -423,7 +423,7 @@ namespace INF1008
             {
                 //On verifie si les noeuds au bout de ces arretes sont permanent, si non on ajoute les noeuds au tableau noeudsAdjacent
                 //Up
-                if (tableauNoeuds[ligne - 1, colonne].Permanent == false)
+                if (tableauNoeuds[ligne - 1, colonne].Permanent == false && tableauNoeuds[ligne - 1, colonne].Poids > tableauVertical[ligne - 1, colonne])
                 {
                     //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
                     tableauNoeuds[ligne - 1, colonne].Poids = tableauVertical[ligne - 1, colonne];
@@ -436,7 +436,7 @@ namespace INF1008
                 }
 
                 //Right
-                if (tableauNoeuds[ligne, colonne + 1].Permanent == false)
+                if (tableauNoeuds[ligne, colonne + 1].Permanent == false && tableauNoeuds[ligne, colonne + 1].Poids > tableauHorizontal[ligne, colonne])
                 {
                     //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
                     tableauNoeuds[ligne, colonne + 1].Poids = tableauHorizontal[ligne, colonne];
@@ -453,7 +453,7 @@ namespace INF1008
             {
                 //On verifie si les noeuds au bout de ces arretes sont permanent, si non on ajoute les noeuds au tableau noeudsAdjacent
                 //Down
-                if (tableauNoeuds[ligne + 1, colonne].Permanent == false)
+                if (tableauNoeuds[ligne + 1, colonne].Permanent == false && tableauNoeuds[ligne + 1, colonne].Poids > tableauVertical[ligne, colonne])
                 {
                     //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
                     tableauNoeuds[ligne + 1, colonne].Poids = tableauVertical[ligne, colonne];
@@ -466,7 +466,7 @@ namespace INF1008
                 }
 
                 //Up
-                if (tableauNoeuds[ligne - 1, colonne].Permanent == false)
+                if (tableauNoeuds[ligne - 1, colonne].Permanent == false && tableauNoeuds[ligne - 1, colonne].Poids > tableauVertical[ligne - 1, colonne])
                 {
                     //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
                     tableauNoeuds[ligne - 1, colonne].Poids = tableauVertical[ligne - 1, colonne];
@@ -479,7 +479,7 @@ namespace INF1008
                 }
 
                 //Right
-                if (tableauNoeuds[ligne, colonne + 1].Permanent == false)
+                if (tableauNoeuds[ligne, colonne + 1].Permanent == false && tableauNoeuds[ligne, colonne + 1].Poids > tableauHorizontal[ligne, colonne])
                 {
                     //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
                     tableauNoeuds[ligne, colonne + 1].Poids = tableauHorizontal[ligne, colonne];
@@ -492,7 +492,7 @@ namespace INF1008
                 }
 
                 //Left
-                if (tableauNoeuds[ligne, colonne - 1].Permanent == false)
+                if (tableauNoeuds[ligne, colonne - 1].Permanent == false && tableauNoeuds[ligne, colonne - 1].Poids > tableauHorizontal[ligne, colonne - 1])
                 {
                     //C'est un noeud candidat, On ajuste les parametres du noeud adjacent
                     tableauNoeuds[ligne, colonne - 1].Poids = tableauHorizontal[ligne, colonne - 1];
