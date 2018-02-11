@@ -37,7 +37,7 @@ namespace INF1008
         private int nbNoeuds;
         private int itr = 0;
         private int ittr = 0;
-        private Noeud[] NoeudsAdjacent;
+        private List<Noeud> NoeudsAdjacent = new List<Noeud>();
         private Noeud[] NoeudsTraite;
         private Noeud noeudCourant;
 
@@ -95,6 +95,7 @@ namespace INF1008
             //Methode qui traite le point de depart pour creer le premier segment du graphe
             Start();
             TrouverAdjacent();
+            TrouverAdjacent(); TrouverAdjacent();
 
             //debug for loop
             for (int i = 0; i < itr; i++)
@@ -110,7 +111,6 @@ namespace INF1008
         private void Start()
         {
             //On initialise les vecteurs de depart
-            NoeudsAdjacent = new Noeud[nbNoeuds];
             NoeudsTraite = new Noeud[nbNoeuds];
 
             //On ajuste les parametres du noeud de depart
@@ -143,7 +143,7 @@ namespace INF1008
 
                 //On ajoute les noeuds a leur vecteur respectifs
                 NoeudsTraite[ittr++] = tableauNoeuds[1, 0];
-                NoeudsAdjacent[itr++] = tableauNoeuds[0, 1];
+                NoeudsAdjacent.Add(tableauNoeuds[0, 1]);
 
                 //On designe le dernier noeud comme noeudCourant
                 noeudCourant = tableauNoeuds[1, 0];
@@ -166,7 +166,7 @@ namespace INF1008
 
                 //On ajoute les noeuds a leur vecteur respectifs
                 NoeudsTraite[ittr++] = tableauNoeuds[0, 1];
-                NoeudsAdjacent[itr++] = tableauNoeuds[1, 0];
+                NoeudsAdjacent.Add(tableauNoeuds[1, 0]);
 
                 //On designe le dernier noeud comme noeudCourant
                 noeudCourant = tableauNoeuds[0, 1];
@@ -195,7 +195,8 @@ namespace INF1008
                     tableauNoeuds[ligne + 1, colonne].Predecesseur = ittr - 1;
 
                     //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent[itr++] = tableauNoeuds[ligne + 1, colonne];
+                    NoeudsAdjacent.Add(tableauNoeuds[ligne + 1, colonne]);
+                    itr++;
                 }
 
                 //Right
@@ -207,7 +208,9 @@ namespace INF1008
                     tableauNoeuds[ligne, colonne + 1].Predecesseur = ittr - 1;
 
                     //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent[itr++] = tableauNoeuds[ligne, colonne + 1];
+                    NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne + 1]);
+                    itr++;
+
                 }
 
                 //Left
@@ -219,14 +222,14 @@ namespace INF1008
                     tableauNoeuds[ligne, colonne - 1].Predecesseur = ittr - 1;
 
                     //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent[itr++] = tableauNoeuds[ligne, colonne - 1];
+                    NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne - 1]);
                 }
             }
 
             //Si la Position du Noeud est sur la ligne = nbLignes, traiter RIGHT, UP, LEFT
             else if (ligne == nbLignes - 1 & colonne != 0 && colonne != nbColonnes - 1)
             {
-                //On verifie que les noeuds au bout de ces arretes n'ont pas deja ete visite, si oui on change la valeur de l'arete pour 33-34 ou 35
+                //On verifie si les noeuds au bout de ces arretes sont permanent, si non on ajoute les noeuds au tableau noeudsAdjacent
                 //Up
                 if (tableauNoeuds[ligne - 1, colonne].Permanent == false)
                 {
@@ -236,7 +239,7 @@ namespace INF1008
                     tableauNoeuds[ligne - 1, colonne].Predecesseur = ittr - 1;
 
                     //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent[itr++] = tableauNoeuds[ligne - 1, colonne];
+                    NoeudsAdjacent.Add(tableauNoeuds[ligne - 1, colonne]);
                 }
 
                 //Right
@@ -248,7 +251,9 @@ namespace INF1008
                     tableauNoeuds[ligne, colonne + 1].Predecesseur = ittr - 1;
 
                     //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent[itr++] = tableauNoeuds[ligne, colonne + 1];
+                    NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne + 1]);
+                    itr++;
+
                 }
 
                 //Left
@@ -260,14 +265,15 @@ namespace INF1008
                     tableauNoeuds[ligne, colonne - 1].Predecesseur = ittr - 1;
 
                     //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent[itr++] = tableauNoeuds[ligne, colonne - 1];
+                    NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne - 1]);
+                    itr++;
                 }
             }
 
             //Si la Position du Noeud est sur la Colonne = 0, traiter RIGHT, UP, DOWN
             else if (colonne == 0 && ligne != 0 && ligne != nbLignes - 1)
             {
-                //On verifie que les noeuds au bout de ces arretes n'ont pas deja ete visite, si oui on change la valeur de l'arete pour 33-34 ou 35
+                //On verifie si les noeuds au bout de ces arretes sont permanent, si non on ajoute les noeuds au tableau noeudsAdjacent
                 //Up
                 if (tableauNoeuds[ligne - 1, colonne].Permanent == false)
                 {
@@ -277,7 +283,8 @@ namespace INF1008
                     tableauNoeuds[ligne - 1, colonne].Predecesseur = ittr - 1;
 
                     //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent[itr++] = tableauNoeuds[ligne - 1, colonne];
+                    NoeudsAdjacent.Add(tableauNoeuds[ligne - 1, colonne]);
+                    itr++;
                 }
 
                 //Right
@@ -289,7 +296,8 @@ namespace INF1008
                     tableauNoeuds[ligne, colonne + 1].Predecesseur = ittr - 1;
 
                     //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent[itr++] = tableauNoeuds[ligne, colonne + 1];
+                    NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne + 1]);
+                    itr++;
                 }
 
                 //Down
@@ -301,14 +309,14 @@ namespace INF1008
                     tableauNoeuds[ligne + 1, colonne].Predecesseur = ittr - 1;
 
                     //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent[itr++] = tableauNoeuds[ligne + 1, colonne];
+                    NoeudsAdjacent.Add(tableauNoeuds[ligne + 1, colonne]);
                 }
             }
 
             //Si la Position du Noeud est sur la Colonne = nbColonnes, traiter LEFT, UP, DOWN
             else if (colonne == nbColonnes - 1 && ligne != 0 && ligne != nbLignes - 1)
             {
-                //On verifie que les noeuds au bout de ces arretes n'ont pas deja ete visite, si oui on change la valeur de l'arete pour 33-34 ou 35
+                //On verifie si les noeuds au bout de ces arretes sont permanent, si non on ajoute les noeuds au tableau noeudsAdjacent
                 //Down
                 if (tableauNoeuds[ligne + 1, colonne].Permanent == false)
                 {
@@ -318,7 +326,8 @@ namespace INF1008
                     tableauNoeuds[ligne + 1, colonne].Predecesseur = ittr - 1;
 
                     //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent[itr++] = tableauNoeuds[ligne + 1, colonne];
+                    NoeudsAdjacent.Add(tableauNoeuds[ligne + 1, colonne]);
+                    itr++;
                 }
 
                 //Up
@@ -330,7 +339,8 @@ namespace INF1008
                     tableauNoeuds[ligne - 1, colonne].Predecesseur = ittr - 1;
 
                     //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent[itr++] = tableauNoeuds[ligne - 1, colonne];
+                    NoeudsAdjacent.Add(tableauNoeuds[ligne - 1, colonne]);
+                    itr++;
                 }
 
                 //Left
@@ -342,14 +352,15 @@ namespace INF1008
                     tableauNoeuds[ligne, colonne - 1].Predecesseur = ittr - 1;
 
                     //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent[itr++] = tableauNoeuds[ligne, colonne - 1];
+                    NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne - 1]);
+                    itr++;
                 }
             }
 
             //Si la Position du Noeud est sur la Colonne = nbColonne && Ligne = 0, traiter LEFT, DOWN
             else if (colonne == nbColonnes - 1 && ligne == 0)
             {
-                //On verifie que les noeuds au bout de ces arretes n'ont pas deja ete visite, si oui on change la valeur de l'arete pour 33-34 ou 35
+                //On verifie si les noeuds au bout de ces arretes sont permanent, si non on ajoute les noeuds au tableau noeudsAdjacent
                 //Down
                 if (tableauNoeuds[ligne + 1, colonne].Permanent == false)
                 {
@@ -359,7 +370,8 @@ namespace INF1008
                     tableauNoeuds[ligne + 1, colonne].Predecesseur = ittr - 1;
 
                     //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent[itr++] = tableauNoeuds[ligne + 1, colonne];
+                    NoeudsAdjacent.Add(tableauNoeuds[ligne + 1, colonne]);
+                    itr++;
                 }
 
                 //Left
@@ -371,14 +383,15 @@ namespace INF1008
                     tableauNoeuds[ligne, colonne - 1].Predecesseur = ittr - 1;
 
                     //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent[itr++] = tableauNoeuds[ligne, colonne - 1];
+                    NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne - 1]);
+                    itr++;
                 }
             }
 
             //Si la Position du Noeud est sur la Colonne = nbColonne && Ligne = nbLignes, traiter LEFT, UP
             else if (colonne == nbColonnes - 1 && ligne == nbLignes - 1)
             {
-                //On verifie que les noeuds au bout de ces arretes n'ont pas deja ete visite, si oui on change la valeur de l'arete pour 33-34 ou 35
+                //On verifie si les noeuds au bout de ces arretes sont permanent, si non on ajoute les noeuds au tableau noeudsAdjacent
                 //Up
                 if (tableauNoeuds[ligne - 1, colonne].Permanent == false)
                 {
@@ -388,7 +401,8 @@ namespace INF1008
                     tableauNoeuds[ligne - 1, colonne].Predecesseur = ittr - 1;
 
                     //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent[itr++] = tableauNoeuds[ligne - 1, colonne];
+                    NoeudsAdjacent.Add(tableauNoeuds[ligne - 1, colonne]);
+                    itr++;
                 }
 
                 //Left
@@ -400,13 +414,14 @@ namespace INF1008
                     tableauNoeuds[ligne, colonne - 1].Predecesseur = ittr - 1;
 
                     //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent[itr++] = tableauNoeuds[ligne, colonne - 1];
+                    NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne - 1]);
+                    itr++;
                 }
             }
             //Si la Position du Noeud est sur la Colonne = 0 && Ligne = nbLignes, traiter RIGHT, UP
             else if (colonne == 0 && ligne == nbLignes - 1)
             {
-                //On verifie que les noeuds au bout de ces arretes n'ont pas deja ete visite, si oui on change la valeur de l'arete pour 33-34 ou 35
+                //On verifie si les noeuds au bout de ces arretes sont permanent, si non on ajoute les noeuds au tableau noeudsAdjacent
                 //Up
                 if (tableauNoeuds[ligne - 1, colonne].Permanent == false)
                 {
@@ -416,7 +431,8 @@ namespace INF1008
                     tableauNoeuds[ligne - 1, colonne].Predecesseur = ittr - 1;
 
                     //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent[itr++] = tableauNoeuds[ligne - 1, colonne];
+                    NoeudsAdjacent.Add(tableauNoeuds[ligne - 1, colonne]);
+                    itr++;
                 }
 
                 //Right
@@ -428,13 +444,14 @@ namespace INF1008
                     tableauNoeuds[ligne, colonne + 1].Predecesseur = ittr - 1;
 
                     //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent[itr++] = tableauNoeuds[ligne, colonne + 1];
+                    NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne + 1]);
+                    itr++;
                 }
             }
             //Est au centre, les 4 directions sont a prendre en compte
             else
             {
-                //On verifie que les noeuds au bout de ces arretes n'ont pas deja ete visite, si oui on change la valeur de l'arete pour 33-34 ou 35
+                //On verifie si les noeuds au bout de ces arretes sont permanent, si non on ajoute les noeuds au tableau noeudsAdjacent
                 //Down
                 if (tableauNoeuds[ligne + 1, colonne].Permanent == false)
                 {
@@ -444,7 +461,8 @@ namespace INF1008
                     tableauNoeuds[ligne + 1, colonne].Predecesseur = ittr - 1;
 
                     //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent[itr++] = tableauNoeuds[ligne + 1, colonne];
+                    NoeudsAdjacent.Add(tableauNoeuds[ligne + 1, colonne]);
+                    itr++;
                 }
 
                 //Up
@@ -456,7 +474,8 @@ namespace INF1008
                     tableauNoeuds[ligne - 1, colonne].Predecesseur = ittr - 1;
 
                     //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent[itr++] = tableauNoeuds[ligne - 1, colonne];
+                    NoeudsAdjacent.Add(tableauNoeuds[ligne - 1, colonne]);
+                    itr++;
                 }
 
                 //Right
@@ -468,7 +487,8 @@ namespace INF1008
                     tableauNoeuds[ligne, colonne + 1].Predecesseur = ittr - 1;
 
                     //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent[itr++] = tableauNoeuds[ligne, colonne + 1];
+                    NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne + 1]);
+                    itr++;
                 }
 
                 //Left
@@ -480,15 +500,13 @@ namespace INF1008
                     tableauNoeuds[ligne, colonne - 1].Predecesseur = ittr - 1;
 
                     //On ajoute le noeud au tableau NoeudsAdjacent
-                    NoeudsAdjacent[itr++] = tableauNoeuds[ligne, colonne - 1];
+                    NoeudsAdjacent.Add(tableauNoeuds[ligne, colonne - 1]);
+                    itr++;
                 }
 
             }
 
-            //TODO  Parcourrir le vecteur des NoeudsAdjacent pour trouver la plus petite arete
-            //      changer la valeur pour 11 de cet arrete dans le tableau correspondant Vertical ou Horizontal et se positionner le noeudCourant
-            //      pointer par cet arrete, changer les parametres du noeud Courant
-
+            // Parcourrir le vecteur des NoeudsAdjacent pour trouver la plus petite arete
             int ValeurAreteMin = 99;
             int indexNoeud = 0;
             for(int i = 0; i < itr; i++)
@@ -501,32 +519,37 @@ namespace INF1008
             }
 
             //On mets le noeud permanent sur le tableaNoeuds
-            tableauNoeuds[NoeudsAdjacent[indexNoeud].Pos.Ligne, NoeudsAdjacent[indexNoeud].Pos.Colonne].Permanent = true;
+            tableauNoeuds[NoeudsAdjacent.ElementAt(indexNoeud).Pos.Ligne, NoeudsAdjacent.ElementAt(indexNoeud).Pos.Colonne].Permanent = true;
 
             //On ajuste le tableau des aretes correspondant et on ajoute le noeud au tableau NoeudTraite
-            if (NoeudsAdjacent[indexNoeud].Direction.Equals("down"))
+            if (NoeudsAdjacent.ElementAt(indexNoeud).Direction.Equals("down"))
             {
                 tableauVertical[ligne, colonne] = 11;
-                NoeudsTraite[ittr++] = tableauNoeuds[NoeudsAdjacent[indexNoeud].Pos.Ligne, NoeudsAdjacent[indexNoeud].Pos.Colonne];
+                NoeudsTraite[ittr++] = tableauNoeuds[NoeudsAdjacent.ElementAt(indexNoeud).Pos.Ligne, NoeudsAdjacent.ElementAt(indexNoeud).Pos.Colonne];
             }
-            else if (NoeudsAdjacent[indexNoeud].Direction.Equals("up"))
+            else if (NoeudsAdjacent.ElementAt(indexNoeud).Direction.Equals("up"))
             {
                 tableauVertical[ligne - 1, colonne] = 11;
-                NoeudsTraite[ittr++] = tableauNoeuds[NoeudsAdjacent[indexNoeud].Pos.Ligne, NoeudsAdjacent[indexNoeud].Pos.Colonne];
+                NoeudsTraite[ittr++] = tableauNoeuds[NoeudsAdjacent.ElementAt(indexNoeud).Pos.Ligne, NoeudsAdjacent.ElementAt(indexNoeud).Pos.Colonne];
             }
-            else if (NoeudsAdjacent[indexNoeud].Direction.Equals("right"))
+            else if (NoeudsAdjacent.ElementAt(indexNoeud).Direction.Equals("right"))
             {
                 tableauHorizontal[ligne, colonne] = 11;
-                NoeudsTraite[ittr++] = tableauNoeuds[NoeudsAdjacent[indexNoeud].Pos.Ligne, NoeudsAdjacent[indexNoeud].Pos.Colonne];
+                NoeudsTraite[ittr++] = tableauNoeuds[NoeudsAdjacent.ElementAt(indexNoeud).Pos.Ligne, NoeudsAdjacent.ElementAt(indexNoeud).Pos.Colonne];
             }
-            else if (NoeudsAdjacent[indexNoeud].Direction.Equals("left"))
+            else if (NoeudsAdjacent.ElementAt(indexNoeud).Direction.Equals("left"))
             {
                 tableauHorizontal[ligne, colonne - 1] = 11;
-                NoeudsTraite[ittr++] = tableauNoeuds[NoeudsAdjacent[indexNoeud].Pos.Ligne, NoeudsAdjacent[indexNoeud].Pos.Colonne];
+                NoeudsTraite[ittr++] = tableauNoeuds[NoeudsAdjacent.ElementAt(indexNoeud).Pos.Ligne, NoeudsAdjacent.ElementAt(indexNoeud).Pos.Colonne];
             }
 
             //Mettre le noeud comme noeudCourant
-            noeudCourant = tableauNoeuds[NoeudsAdjacent[indexNoeud].Pos.Ligne, NoeudsAdjacent[indexNoeud].Pos.Colonne];
+            noeudCourant = tableauNoeuds[NoeudsAdjacent.ElementAt(indexNoeud).Pos.Ligne, NoeudsAdjacent.ElementAt(indexNoeud).Pos.Colonne];
+
+            //Retirer le noeud des noeuds adjacents
+            NoeudsAdjacent.RemoveAt(indexNoeud);
+            itr--;
+
 
             Console.WriteLine("Valeur Arete Min: " + ValeurAreteMin + " index Noeud: " + indexNoeud);
             Console.WriteLine("Noeud courant: [" + noeudCourant.Pos.Ligne + "," + noeudCourant.Pos.Colonne + "]");
