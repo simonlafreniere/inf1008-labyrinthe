@@ -177,7 +177,7 @@ namespace INF1008
 
         private void TrouverAdjacent()
         {
-
+            Console.WriteLine("step");
             //On recupere la position du noeudCourant
             int ligne = noeudCourant.Pos.Ligne;
             int colonne = noeudCourant.Pos.Colonne;
