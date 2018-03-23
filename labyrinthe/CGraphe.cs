@@ -39,7 +39,7 @@ namespace labyrinthe
             copieGraphetoOriginal();
         }
 
-        public void setLargeur(int largeur)
+        public void setLargeur(int largeur=3)
         {
             if (largeur < 2)
                 this.largeur = 3;
@@ -47,7 +47,7 @@ namespace labyrinthe
                 this.largeur = largeur;
         }
 
-        public void setHauteur(int hauteur)
+        public void setHauteur(int hauteur=3)
         {
             if (hauteur < 2)
                 this.hauteur = 3;
