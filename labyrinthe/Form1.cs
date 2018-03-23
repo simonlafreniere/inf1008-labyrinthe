@@ -19,8 +19,9 @@ namespace labyrinthe
 
         private void button1_Click(object sender, EventArgs e)
         {
-            CGraphe monGraphe = new CGraphe(3, 3, 3);
-            monGraphe.Prim(0);
+            CGraphe monGraphe = new CGraphe(3, 3, 2);
+            monGraphe.Prim();
+            monGraphe.densite();
         }
     }
 }
