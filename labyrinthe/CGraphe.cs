@@ -48,7 +48,7 @@ namespace labyrinthe
             //graphe des noeuds visités
             visites = new int[dimension];
             visites[entree] = 1;
-            for (int i = dimension; i > 0; i--)
+            for (int i = dimension; i > 1; i--)
             {
                 int pos = 0;
                 selection = poids = 0;
@@ -58,14 +58,14 @@ namespace labyrinthe
                         eval(pos);
                     pos++;
                 }
-                visites[selection] = 1;
+
                 switch (direction)
                 {
                     case 'e':
-                        graphe[selection-1, 0] = 0;
+                        graphe[selection - 1, 0] = 0;
                         break;
                     case 's':
-                        graphe[selection -largeur, 1] = 0;
+                        graphe[selection - largeur, 1] = 0;
                         break;
                     case 'o':
                         graphe[selection, 0] = 0;
@@ -74,6 +74,7 @@ namespace labyrinthe
                         graphe[selection, 1] = 0;
                         break;
                 }
+                visites[selection] = 1;
             }
         }
 
@@ -87,7 +88,7 @@ namespace labyrinthe
                 else
                   if (graphe[noeud, 0] > poids)
                 {
-                    selection = noeud+1;
+                    selection = noeud + 1;
                     poids = graphe[noeud, 0];
                     direction = 'e';
                 }
@@ -101,7 +102,7 @@ namespace labyrinthe
                 else
                   if (graphe[noeud, 1] > poids)
                 {
-                    selection = noeud+largeur;
+                    selection = noeud + largeur;
                     poids = graphe[noeud, 1];
                     direction = 's';
                 }
@@ -109,10 +110,13 @@ namespace labyrinthe
 
             //ouest
             //si il ne s'agit pas de la première colonne
-            if ((noeud - 1) % largeur != largeur - 1 && noeud - 1 > 0)
+            if (noeud > 0 && noeud % largeur != 0)
             {
                 if (visites[noeud - 1] == 1)
-                    graphe[noeud - 1, 0] = -1;
+                {
+                    if (graphe[noeud - 1, 0] > 0)
+                        graphe[noeud - 1, 0] = -1;
+                }
                 else
                     if (graphe[noeud - 1, 0] > poids)
                 {
@@ -124,10 +128,13 @@ namespace labyrinthe
 
             //nord
             //si il ne s'agit pas de la première ligne
-            if ((noeud - largeur) > 0)
+            if ((noeud - largeur) > -1)
             {
                 if (visites[noeud - largeur] == 1)
-                    graphe[noeud - largeur, 1] = -1;
+                {
+                    if (graphe[noeud - largeur, 1] > 0)
+                        graphe[noeud - largeur, 1] = -1;
+                }
                 else
                     if (graphe[noeud - largeur, 1] > poids)
                 {

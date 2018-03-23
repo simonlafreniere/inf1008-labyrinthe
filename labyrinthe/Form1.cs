@@ -19,7 +19,7 @@ namespace labyrinthe
 
         private void button1_Click(object sender, EventArgs e)
         {
-            CGraphe monGraphe = new CGraphe(2, 2, 3);
+            CGraphe monGraphe = new CGraphe(3, 3, 3);
             monGraphe.Prim(0);
         }
     }
