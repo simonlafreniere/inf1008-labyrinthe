@@ -16,5 +16,11 @@ namespace labyrinthe
         {
             InitializeComponent();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            CGraphe monGraphe = new CGraphe(2, 2, 3);
+            monGraphe.Prim(0);
+        }
     }
 }
