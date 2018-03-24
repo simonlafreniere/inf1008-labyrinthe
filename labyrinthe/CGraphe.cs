@@ -39,6 +39,53 @@ namespace labyrinthe
             copieGraphetoOriginal();
         }
 
+        public int[,] getGraphe()
+        {
+            return graphe;
+        }
+
+        public int[,] getGrapheOriginal()
+        {
+            return grapheOriginal;
+        }
+
+        public int getDimension()
+        {
+            return dimension;
+        }
+
+        public int getLargeur()
+        {
+            return largeur;
+        }
+
+        public int getHauteur()
+        {
+            return hauteur;
+        }
+
+        public int getPoids()
+        {
+            return poidsMax;
+        }
+
+        public int getEntree()
+        {
+            return entree;
+        }
+
+        public int getSortie()
+        {
+            return sortie;
+        }
+
+        public int[,] getGrapheDensite()
+        {
+            return grapheDensite;
+        }
+
+
+
         public void setLargeur(int largeur=3)
         {
             if (largeur < 2)

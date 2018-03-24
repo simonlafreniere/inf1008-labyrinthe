@@ -21,7 +21,10 @@ namespace labyrinthe
         {
             CGraphe monGraphe = new CGraphe(2, 3, 2);
             monGraphe.Prim();
-            monGraphe.densite();
+            
+            int[,] g = monGraphe.getGraphe();
+
+           monGraphe.densite();
         }
     }
 }
