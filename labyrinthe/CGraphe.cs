@@ -39,6 +39,10 @@ namespace labyrinthe
             copieGraphetoOriginal();
         }
 
+
+          /***************/
+         /* --getters-- */
+        /***************/
         public int[,] getGraphe()
         {
             return graphe;
@@ -85,7 +89,9 @@ namespace labyrinthe
         }
 
 
-
+          /***************/
+         /* --setters-- */
+        /***************/
         public void setLargeur(int largeur=3)
         {
             if (largeur < 2)
@@ -285,8 +291,12 @@ namespace labyrinthe
                 graphe[i, 0] = -1;
         }
 
+
+          /************/
+         /* --Prim-- */
+        /************/
         //calcul de l'arbre sous-tendant minimal
-        public void Prim()
+        public int[,] Prim()
         {
             //graphe des noeuds visités
             visites = new int[dimension];
@@ -321,6 +331,7 @@ namespace labyrinthe
                 }
                 visites[selection] = 1;
             }
+            return graphe;
         }
 
         //évaluation des arêtes
@@ -393,7 +404,7 @@ namespace labyrinthe
         }
 
         //calcul du graphe de densité
-        //256 passe, après afficher en valeur RGB
+        //256 passes, après afficher en valeur RGB
         //bool rdnES:réinicier entrée-sortie à chaque passe
         //bool rdnGraphe: réinicier le graphe à chaque passe
         public void densite(bool rdnES=false, bool rdnGraphe=true)
@@ -426,6 +437,9 @@ namespace labyrinthe
             }
         }
 
+        /** ****** **/
+        /** Copies **/
+        /** ****** **/
         private void copieGraphetoOriginal()
         {
             grapheOriginal = new int[dimension, 2];
