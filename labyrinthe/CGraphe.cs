@@ -8,7 +8,7 @@ namespace labyrinthe
 {
     class CGraphe
     {
-        private int[,] graphe, grapheDensite, grapheOriginal;
+        private int[,] graphe;
         private int[] visites;
         private int largeur, hauteur, poidsMax, dimension;
         private int selection, poids, entree, sortie;
@@ -24,8 +24,7 @@ namespace labyrinthe
             entree = 0;
             sortie = dimension - 1;
             initGraphe();
-            copieGraphetoOriginal();//sauvegarde pour si on veut réutiliser le même graphe plus d'une fois
-        }
+            }
 
         public CGraphe(int largeur, int hauteur, int poids)
         {
@@ -36,7 +35,6 @@ namespace labyrinthe
             entree = 0;
             sortie = dimension - 1;
             initGraphe();
-            copieGraphetoOriginal();
         }
 
 
@@ -46,11 +44,6 @@ namespace labyrinthe
         public int[,] getGraphe()
         {
             return graphe;
-        }
-
-        public int[,] getGrapheOriginal()
-        {
-            return grapheOriginal;
         }
 
         public int getDimension()
@@ -81,11 +74,6 @@ namespace labyrinthe
         public int getSortie()
         {
             return sortie;
-        }
-
-        public int[,] getGrapheDensite()
-        {
-            return grapheDensite;
         }
 
 
@@ -403,60 +391,6 @@ namespace labyrinthe
             }
         }
 
-        //calcul du graphe de densité
-        //256 passes, après afficher en valeur RGB
-        //bool rdnES:réinicier entrée-sortie à chaque passe
-        //bool rdnGraphe: réinicier le graphe à chaque passe
-        public void densite(bool rdnES=false, bool rdnGraphe=true)
-        {
-            grapheDensite = new int[dimension, 2];
-            //au moins un des deux
-            if (rdnES || rdnGraphe)
-            {
-                for (int i = 0; i < 256; i++)
-                {
-                    if (rdnES)
-                    {
-                        setEntree();
-                        setSortie(); 
-                    }
-                    if (rdnGraphe)
-                        initGraphe();
-                    else
-                        copieOriginaltoGraphe();
-
-                    Prim();
-                    for (int j = 0; j < dimension; j++)
-                    {
-                        if (graphe[j, 0] == 0)
-                            grapheDensite[j, 0]++;
-                        if (graphe[j, 1] == 0)
-                            grapheDensite[j, 1]++;
-                    }
-                }
-            }
-        }
-
-        /** ****** **/
-        /** Copies **/
-        /** ****** **/
-        private void copieGraphetoOriginal()
-        {
-            grapheOriginal = new int[dimension, 2];
-            for (int i = 0; i < dimension; i++)
-            {
-                grapheOriginal[i, 0] = graphe[i, 0];
-                grapheOriginal[i, 1] = graphe[i, 1];
-            }
-        }
-
-        private void copieOriginaltoGraphe()
-        {
-            for (int i = 0; i < dimension; i++)
-            {
-                graphe[i, 0] = grapheOriginal[i, 0];
-                graphe[i, 1] = grapheOriginal[i, 1];
-            }
-        }
+   
     }
 }

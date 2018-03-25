@@ -46,7 +46,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CGraphe.cs" />
-    <Compile Include="CCalcul.cs" />
     <Compile Include="FormLabyrinte.cs">
       <SubType>Form</SubType>
     </Compile>
