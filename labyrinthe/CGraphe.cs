@@ -86,6 +86,7 @@ namespace labyrinthe
                 this.largeur = 3;
             else
                 this.largeur = largeur;
+            dimension = hauteur * largeur;
         }
 
         public void setHauteur(int hauteur=3)
@@ -94,6 +95,7 @@ namespace labyrinthe
                 this.hauteur = 3;
             else
                 this.hauteur = hauteur;
+            dimension = hauteur * largeur;
         }
 
         public void setPoids()
