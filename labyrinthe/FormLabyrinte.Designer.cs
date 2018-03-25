@@ -1,6 +1,6 @@
 ﻿namespace labyrinthe
 {
-    partial class Form1
+    partial class FormLabyrinte
     {
         /// <summary>
         /// Variable nécessaire au concepteur.
@@ -30,6 +30,8 @@
         {
             this.btnGenerer = new System.Windows.Forms.Button();
             this.panelControl = new System.Windows.Forms.Panel();
+            this.txtNbNoeuds = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.txtHauteur = new System.Windows.Forms.TextBox();
             this.txtLargeur = new System.Windows.Forms.TextBox();
             this.lblHauteur = new System.Windows.Forms.Label();
@@ -50,7 +52,10 @@
             // 
             // panelControl
             // 
+            this.panelControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelControl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelControl.Controls.Add(this.txtNbNoeuds);
+            this.panelControl.Controls.Add(this.label1);
             this.panelControl.Controls.Add(this.txtHauteur);
             this.panelControl.Controls.Add(this.txtLargeur);
             this.panelControl.Controls.Add(this.lblHauteur);
@@ -61,16 +66,33 @@
             this.panelControl.Size = new System.Drawing.Size(165, 174);
             this.panelControl.TabIndex = 1;
             // 
+            // txtNbNoeuds
+            // 
+            this.txtNbNoeuds.Location = new System.Drawing.Point(110, 80);
+            this.txtNbNoeuds.Name = "txtNbNoeuds";
+            this.txtNbNoeuds.Size = new System.Drawing.Size(47, 20);
+            this.txtNbNoeuds.TabIndex = 6;
+            this.txtNbNoeuds.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNbNoeuds_KeyPress);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(43, 83);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(61, 13);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "NbNoeuds:";
+            // 
             // txtHauteur
             // 
-            this.txtHauteur.Location = new System.Drawing.Point(96, 54);
+            this.txtHauteur.Location = new System.Drawing.Point(110, 53);
             this.txtHauteur.Name = "txtHauteur";
             this.txtHauteur.Size = new System.Drawing.Size(47, 20);
             this.txtHauteur.TabIndex = 4;
             // 
             // txtLargeur
             // 
-            this.txtLargeur.Location = new System.Drawing.Point(96, 27);
+            this.txtLargeur.Location = new System.Drawing.Point(110, 28);
             this.txtLargeur.Name = "txtLargeur";
             this.txtLargeur.Size = new System.Drawing.Size(47, 20);
             this.txtLargeur.TabIndex = 3;
@@ -95,6 +117,7 @@
             // 
             // lblControl
             // 
+            this.lblControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblControl.AutoSize = true;
             this.lblControl.Location = new System.Drawing.Point(784, 3);
             this.lblControl.Name = "lblControl";
@@ -102,14 +125,14 @@
             this.lblControl.TabIndex = 2;
             this.lblControl.Text = "Control";
             // 
-            // Form1
+            // FormLabyrinte
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(968, 650);
             this.Controls.Add(this.lblControl);
             this.Controls.Add(this.panelControl);
-            this.Name = "Form1";
+            this.Name = "FormLabyrinte";
             this.Text = "Form1";
             this.panelControl.ResumeLayout(false);
             this.panelControl.PerformLayout();
@@ -127,6 +150,8 @@
         private System.Windows.Forms.TextBox txtLargeur;
         private System.Windows.Forms.Label lblHauteur;
         private System.Windows.Forms.Label lblLargeur;
+        private System.Windows.Forms.TextBox txtNbNoeuds;
+        private System.Windows.Forms.Label label1;
     }
 }
 
