@@ -12,17 +12,34 @@ namespace labyrinthe
 {
     public partial class FormLabyrinte : Form
     {
-        int largeur;
-        int hauteur;
+        private int largeur;
+        private int hauteur;
+        public static FormLabyrinte UI;
+
 
         public FormLabyrinte()
         {
             InitializeComponent();
+            UI = this;
         }
 
+        public void setCounterPrim(int itr, int aff, int comp)
+        {
+            lblCounterPrim.Text = "Prim: " + itr + " iterations\n\n" +
+                                  "Assigantions:   " + aff + "\nComparaisons:  " + comp;
+        }
+
+        public void setCounterInit(int nbOp)
+        {
+            lblCounterInit.Text = "Init: " + nbOp + " Opérations";
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
+
+            lblCounterAffichage.Text = "Affichage: ";
+            lblCounterPrim.Text = "Prim: ";
+
             double width = 0;
             double height = 0;
             double step = 0;
@@ -63,9 +80,15 @@ namespace labyrinthe
                 }
 
                 step = width + 1;
+                int initOp = 0, primOp = 0;
+                CGraphe monGraphe = new CGraphe(largeur, hauteur, 3, ref initOp);
+                monGraphe.Prim(ref primOp);
 
-                CGraphe monGraphe = new CGraphe(largeur, hauteur, 2);
-                monGraphe.Prim();
+                int nbAr = CCalcul.nBase(largeur, hauteur);
+
+                lblCounterInit.Text = "Init: " + initOp + " opérations\n\nNb arêtes au total: "+nbAr;
+                lblCounterPrim.Text = "Prim: " + primOp + " opérations\n\nNb arêtes choisies: "+(largeur*hauteur-1);
+
                 int[,] g1 = monGraphe.getGraphe();
 
                 using (Graphics g = this.CreateGraphics())
@@ -75,6 +98,10 @@ namespace labyrinthe
                     {
                         for (int i = 0; i <= (g1.Length / 2) - 1; i++)
                         {
+
+                            lblCounterAffichage.Text = "Affichage: " + ((i + 1) * 5 + (i + 1) * 2) + " opérations";
+
+
                             int pos_i = i / largeur;
                             int pos_j = i % largeur;
 
@@ -113,7 +140,5 @@ namespace labyrinthe
 
             }
         }
-
-       
     }
 }

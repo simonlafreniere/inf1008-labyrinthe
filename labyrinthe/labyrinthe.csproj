@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CCalcul.cs" />
     <Compile Include="CGraphe.cs" />
     <Compile Include="FormLabyrinte.cs">
       <SubType>Form</SubType>

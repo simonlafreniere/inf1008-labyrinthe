@@ -14,7 +14,7 @@ namespace labyrinthe
         private int selection, poids, entree, sortie;
         private char direction;
 
-        public CGraphe()
+        public CGraphe(ref int nbOp)
         {
             Random rdn = new Random();
             largeur = rdn.Next(2, 11);
@@ -23,10 +23,10 @@ namespace labyrinthe
             dimension = largeur * hauteur;
             entree = 0;
             sortie = dimension - 1;
-            initGraphe();
-            }
+            initGraphe(ref nbOp);
+        }
 
-        public CGraphe(int largeur, int hauteur, int poids)
+        public CGraphe(int largeur, int hauteur, int poids, ref int nbOp)
         {
             setLargeur(largeur);
             setHauteur(hauteur);
@@ -34,12 +34,12 @@ namespace labyrinthe
             dimension = largeur * hauteur;
             entree = 0;
             sortie = dimension - 1;
-            initGraphe();
+            initGraphe(ref nbOp);
         }
 
 
-          /***************/
-         /* --getters-- */
+        /***************/
+        /* --getters-- */
         /***************/
         public int[,] getGraphe()
         {
@@ -77,10 +77,10 @@ namespace labyrinthe
         }
 
 
-          /***************/
-         /* --setters-- */
         /***************/
-        public void setLargeur(int largeur=3)
+        /* --setters-- */
+        /***************/
+        public void setLargeur(int largeur = 3)
         {
             if (largeur < 2)
                 this.largeur = 3;
@@ -89,7 +89,7 @@ namespace labyrinthe
             dimension = hauteur * largeur;
         }
 
-        public void setHauteur(int hauteur=3)
+        public void setHauteur(int hauteur = 3)
         {
             if (hauteur < 2)
                 this.hauteur = 3;
@@ -112,10 +112,10 @@ namespace labyrinthe
                 setPoids();
         }
 
- 
+
 
         //remplissage du graphe avec les poids des arêtes
-        public void initGraphe()
+        public void initGraphe(ref int nbOp)
         {
             graphe = new int[dimension, 2];
             Random rdn = new Random();
@@ -123,23 +123,33 @@ namespace labyrinthe
             {
                 graphe[i, 0] = rdn.Next(1, poidsMax + 1);
                 graphe[i, 1] = rdn.Next(1, poidsMax + 1);
+
+                nbOp += 2;
             }
 
             //dernière ligne
             int posArret = dimension - 1 - largeur;
             for (int i = dimension - 1; i > posArret; i--)
+            {
                 graphe[i, 1] = -1;
+
+                nbOp++;
+            }
             //dernière colonne
             for (int i = dimension - 1; i > 0; i -= largeur)
+            {
                 graphe[i, 0] = -1;
+
+                nbOp++;
+            }
         }
 
 
-          /************/
-         /* --Prim-- */
+        /************/
+        /* --Prim-- */
         /************/
         //calcul de l'arbre sous-tendant minimal
-        public int[,] Prim()
+        public int[,] Prim(ref int nbOp)
         {
             //graphe des noeuds visités
             visites = new int[dimension];
@@ -153,7 +163,7 @@ namespace labyrinthe
                 foreach (int noeud in visites)
                 {
                     if (noeud == 1)
-                        eval(pos);
+                        eval(pos, ref nbOp);
                     pos++;
                 }
 
@@ -173,40 +183,57 @@ namespace labyrinthe
                         break;
                 }
                 visites[selection] = 1;
+                nbOp+=2;
             }
             return graphe;
         }
 
         //évaluation des arêtes
-        private void eval(int noeud)
+        private void eval(int noeud, ref int nbOp)
         {
             //est
             //si l'arête n'a pas déjà été utilisée et le noeud à droite existe
             if (graphe[noeud, 0] > 0)
             {   //si le noeud à droite a déjà été visité
                 if (visites[noeud + 1] == 1)
+                {
                     graphe[noeud, 0] = -1;
+
+                    nbOp++;
+                }
                 else
                    if (graphe[noeud, 0] > poids)
                 {
                     selection = noeud + 1;
                     poids = graphe[noeud, 0];
                     direction = 'e';
+
+                    nbOp += 3;
                 }
+
+                
             }
 
             //sud
             if (graphe[noeud, 1] > 0)
             {
                 if (visites[noeud + largeur] == 1)
+                {
                     graphe[noeud, 1] = -1;
+
+                    nbOp++;
+                }
                 else
                   if (graphe[noeud, 1] > poids)
                 {
                     selection = noeud + largeur;
                     poids = graphe[noeud, 1];
                     direction = 's';
+
+                    nbOp += 3;
                 }
+
+               
             }
 
             //ouest
@@ -217,6 +244,8 @@ namespace labyrinthe
                 {
                     if (graphe[noeud - 1, 0] > 0)
                         graphe[noeud - 1, 0] = -1;
+
+                    nbOp++;
                 }
                 else
                     if (graphe[noeud - 1, 0] > poids)
@@ -224,7 +253,11 @@ namespace labyrinthe
                     selection = noeud - 1;
                     poids = graphe[noeud - 1, 0];
                     direction = 'o';
+
+                    nbOp += 3;
                 }
+
+                
             }
 
             //nord
@@ -235,6 +268,8 @@ namespace labyrinthe
                 {
                     if (graphe[noeud - largeur, 1] > 0)
                         graphe[noeud - largeur, 1] = -1;
+
+                    nbOp++;
                 }
                 else
                     if (graphe[noeud - largeur, 1] > poids)
@@ -242,10 +277,14 @@ namespace labyrinthe
                     selection = noeud - largeur;
                     poids = graphe[noeud - largeur, 1];
                     direction = 'n';
+
+                    nbOp += 3;
                 }
+
+                
             }
         }
 
-   
+
     }
 }

@@ -10,12 +10,12 @@ using System.Windows.Forms;
 
 namespace labyrinthe
 {
-    public partial class Form1 : Form
+    public partial class FormLabyrinte : Form
     {
         int largeur;
         int hauteur;
 
-        public Form1()
+        public FormLabyrinte()
         {
             InitializeComponent();
         }
@@ -23,9 +23,9 @@ namespace labyrinthe
 
         private void button1_Click(object sender, EventArgs e)
         {
-            double width =0;
-            double height =0;
-            double step =0;
+            double width = 0;
+            double height = 0;
+            double step = 0;
             int i2, j2, M_size;
 
             if (String.IsNullOrEmpty(txtLargeur.Text) || String.IsNullOrEmpty(txtHauteur.Text))
@@ -54,7 +54,7 @@ namespace labyrinthe
                 }
                 else if (M_size >= 36 && M_size < 101)
                 {
-                   width = height = -0.0615384615 * M_size + 8.153846154;
+                    width = height = -0.0615384615 * M_size + 8.153846154;
                 }
                 else
                 {
@@ -66,14 +66,14 @@ namespace labyrinthe
 
                 CGraphe monGraphe = new CGraphe(largeur, hauteur, 2);
                 monGraphe.Prim();
-                int[,] g1= monGraphe.getGraphe();
+                int[,] g1 = monGraphe.getGraphe();
 
                 using (Graphics g = this.CreateGraphics())
                 {
                     g.Clear(SystemColors.Control); //Clear the draw area
                     using (Pen pen = new Pen(Color.Black, 2))
                     {
-                        for (int i = 0; i <= (g1.Length/2)- 1; i++)
+                        for (int i = 0; i <= (g1.Length / 2) - 1; i++)
                         {
                             int pos_i = i / largeur;
                             int pos_j = i % largeur;
@@ -85,10 +85,10 @@ namespace labyrinthe
                             g.DrawRectangle(pen, rect);
                             g.FillRectangle(System.Drawing.Brushes.Black, rect);
 
-                            if (g1[i,0] == 0)
+                            if (g1[i, 0] == 0)
                             {
                                 i2 = 2 * pos_i;
-                                j2 = (2 * pos_j) +1;
+                                j2 = (2 * pos_j) + 1;
 
                                 rect = new Rectangle(new Point(5 + (int)step * j2, 5 + (int)step * i2), new Size((int)width, (int)height));
                                 g.DrawRectangle(pen, rect);
@@ -112,6 +112,8 @@ namespace labyrinthe
             {
 
             }
-        }     
+        }
+
+       
     }
 }

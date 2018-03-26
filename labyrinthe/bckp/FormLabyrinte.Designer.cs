@@ -1,6 +1,6 @@
 ﻿namespace labyrinthe
 {
-    partial class Form1
+    partial class FormLabyrinte
     {
         /// <summary>
         /// Variable nécessaire au concepteur.
@@ -50,6 +50,7 @@
             // 
             // panelControl
             // 
+            this.panelControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panelControl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelControl.Controls.Add(this.txtHauteur);
             this.panelControl.Controls.Add(this.txtLargeur);
@@ -63,14 +64,14 @@
             // 
             // txtHauteur
             // 
-            this.txtHauteur.Location = new System.Drawing.Point(96, 54);
+            this.txtHauteur.Location = new System.Drawing.Point(110, 53);
             this.txtHauteur.Name = "txtHauteur";
             this.txtHauteur.Size = new System.Drawing.Size(47, 20);
             this.txtHauteur.TabIndex = 4;
             // 
             // txtLargeur
             // 
-            this.txtLargeur.Location = new System.Drawing.Point(96, 27);
+            this.txtLargeur.Location = new System.Drawing.Point(110, 28);
             this.txtLargeur.Name = "txtLargeur";
             this.txtLargeur.Size = new System.Drawing.Size(47, 20);
             this.txtLargeur.TabIndex = 3;
@@ -95,6 +96,7 @@
             // 
             // lblControl
             // 
+            this.lblControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblControl.AutoSize = true;
             this.lblControl.Location = new System.Drawing.Point(784, 3);
             this.lblControl.Name = "lblControl";
@@ -102,14 +104,14 @@
             this.lblControl.TabIndex = 2;
             this.lblControl.Text = "Control";
             // 
-            // Form1
+            // FormLabyrinte
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(968, 650);
             this.Controls.Add(this.lblControl);
             this.Controls.Add(this.panelControl);
-            this.Name = "Form1";
+            this.Name = "FormLabyrinte";
             this.Text = "Form1";
             this.panelControl.ResumeLayout(false);
             this.panelControl.PerformLayout();
