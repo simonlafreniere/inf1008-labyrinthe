@@ -8,21 +8,47 @@ namespace labyrinthe
 {
     class CCalcul
     {
-        //plus grands facteurs
-        public static int[] PGF(int nb)
+        public static int nBase(int n, int m)
         {
-            int[] result = new int[2];
-            int n=1, m=nb;
+            int result = n * (m - 1) + m * (n - 1);
+            return result;
+        }
 
-            while (n <= m)
+        public static int factorielle(int nombre)
+        {
+            if (nombre == 1)
+                return 1;
+            else
+                return nombre * factorielle(nombre - 1);
+        }
+
+        public static string ordreToString(int ordre)
+        {
+            string result = "ordre inconnu..";
+            switch (ordre)
             {
-                if (nb % n == 0)
-                    m = nb / n;
-                n++;
+                case 0:
+                    result = "(1)";
+                    break;
+                case 1:
+                    result = "log(n)";
+                    break;
+                case 2:
+                    result = "n";
+                    break;
+                case 3:
+                    result = "nlog(n)";
+                    break;
+                case 4:
+                    result = "n!";
+                    break;
+                case 5:
+                    result = "n carré";
+                    break;
+                case 6:
+                    result = "n cube ou pire..";
+                    break;
             }
-
-            result[0] = nb/m;
-            result[1] = m;
             return result;
         }
     }

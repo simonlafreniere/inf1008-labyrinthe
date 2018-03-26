@@ -1,6 +1,6 @@
 ﻿namespace labyrinthe
 {
-    partial class Form1
+    partial class FormLabyrinte
     {
         /// <summary>
         /// Variable nécessaire au concepteur.
@@ -35,7 +35,13 @@
             this.lblHauteur = new System.Windows.Forms.Label();
             this.lblLargeur = new System.Windows.Forms.Label();
             this.lblControl = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.lblCounterPrim = new System.Windows.Forms.Label();
+            this.lblCounterAffichage = new System.Windows.Forms.Label();
+            this.lblCounters = new System.Windows.Forms.Label();
+            this.lblCounterInit = new System.Windows.Forms.Label();
             this.panelControl.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnGenerer
@@ -56,9 +62,9 @@
             this.panelControl.Controls.Add(this.lblHauteur);
             this.panelControl.Controls.Add(this.lblLargeur);
             this.panelControl.Controls.Add(this.btnGenerer);
-            this.panelControl.Location = new System.Drawing.Point(779, 15);
+            this.panelControl.Location = new System.Drawing.Point(779, 19);
             this.panelControl.Name = "panelControl";
-            this.panelControl.Size = new System.Drawing.Size(165, 174);
+            this.panelControl.Size = new System.Drawing.Size(165, 170);
             this.panelControl.TabIndex = 1;
             // 
             // txtHauteur
@@ -102,17 +108,71 @@
             this.lblControl.TabIndex = 2;
             this.lblControl.Text = "Control";
             // 
+            // panel1
+            // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.lblCounterInit);
+            this.panel1.Controls.Add(this.lblCounterPrim);
+            this.panel1.Controls.Add(this.lblCounterAffichage);
+            this.panel1.Location = new System.Drawing.Point(779, 211);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(165, 414);
+            this.panel1.TabIndex = 3;
+            // 
+            // lblCounterPrim
+            // 
+            this.lblCounterPrim.AutoSize = true;
+            this.lblCounterPrim.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lblCounterPrim.Location = new System.Drawing.Point(9, 181);
+            this.lblCounterPrim.Name = "lblCounterPrim";
+            this.lblCounterPrim.Size = new System.Drawing.Size(39, 13);
+            this.lblCounterPrim.TabIndex = 1;
+            this.lblCounterPrim.Text = "Prim: ";
+            // 
+            // lblCounterAffichage
+            // 
+            this.lblCounterAffichage.AutoSize = true;
+            this.lblCounterAffichage.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lblCounterAffichage.Location = new System.Drawing.Point(9, 302);
+            this.lblCounterAffichage.Name = "lblCounterAffichage";
+            this.lblCounterAffichage.Size = new System.Drawing.Size(69, 13);
+            this.lblCounterAffichage.TabIndex = 0;
+            this.lblCounterAffichage.Text = "Affichage: ";
+            // 
+            // lblCounters
+            // 
+            this.lblCounters.AutoSize = true;
+            this.lblCounters.Location = new System.Drawing.Point(789, 195);
+            this.lblCounters.Name = "lblCounters";
+            this.lblCounters.Size = new System.Drawing.Size(49, 13);
+            this.lblCounters.TabIndex = 4;
+            this.lblCounters.Text = "Counters";
+            // 
+            // lblCounterInit
+            // 
+            this.lblCounterInit.AutoSize = true;
+            this.lblCounterInit.Location = new System.Drawing.Point(12, 50);
+            this.lblCounterInit.Name = "lblCounterInit";
+            this.lblCounterInit.Size = new System.Drawing.Size(27, 13);
+            this.lblCounterInit.TabIndex = 2;
+            this.lblCounterInit.Text = "Init: ";
+            this.lblCounterInit.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(968, 650);
+            this.Controls.Add(this.lblCounters);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.lblControl);
             this.Controls.Add(this.panelControl);
             this.Name = "Form1";
             this.Text = "Form1";
             this.panelControl.ResumeLayout(false);
             this.panelControl.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -127,6 +187,11 @@
         private System.Windows.Forms.TextBox txtLargeur;
         private System.Windows.Forms.Label lblHauteur;
         private System.Windows.Forms.Label lblLargeur;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label lblCounterAffichage;
+        private System.Windows.Forms.Label lblCounters;
+        private System.Windows.Forms.Label lblCounterPrim;
+        private System.Windows.Forms.Label lblCounterInit;
     }
 }
 

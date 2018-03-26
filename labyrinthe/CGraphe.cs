@@ -8,13 +8,13 @@ namespace labyrinthe
 {
     class CGraphe
     {
-        private int[,] graphe, grapheDensite, grapheOriginal;
+        private int[,] graphe;
         private int[] visites;
         private int largeur, hauteur, poidsMax, dimension;
         private int selection, poids, entree, sortie;
         private char direction;
 
-        public CGraphe()
+        public CGraphe(ref int nbOp)
         {
             Random rdn = new Random();
             largeur = rdn.Next(2, 11);
@@ -23,11 +23,10 @@ namespace labyrinthe
             dimension = largeur * hauteur;
             entree = 0;
             sortie = dimension - 1;
-            initGraphe();
-            copieGraphetoOriginal();//sauvegarde pour si on veut réutiliser le même graphe plus d'une fois
+            initGraphe(ref nbOp);
         }
 
-        public CGraphe(int largeur, int hauteur, int poids)
+        public CGraphe(int largeur, int hauteur, int poids, ref int nbOp)
         {
             setLargeur(largeur);
             setHauteur(hauteur);
@@ -35,22 +34,16 @@ namespace labyrinthe
             dimension = largeur * hauteur;
             entree = 0;
             sortie = dimension - 1;
-            initGraphe();
-            copieGraphetoOriginal();
+            initGraphe(ref nbOp);
         }
 
 
-          /***************/
-         /* --getters-- */
+        /***************/
+        /* --getters-- */
         /***************/
         public int[,] getGraphe()
         {
             return graphe;
-        }
-
-        public int[,] getGrapheOriginal()
-        {
-            return grapheOriginal;
         }
 
         public int getDimension()
@@ -83,29 +76,26 @@ namespace labyrinthe
             return sortie;
         }
 
-        public int[,] getGrapheDensite()
-        {
-            return grapheDensite;
-        }
 
-
-          /***************/
-         /* --setters-- */
         /***************/
-        public void setLargeur(int largeur=3)
+        /* --setters-- */
+        /***************/
+        public void setLargeur(int largeur = 3)
         {
             if (largeur < 2)
                 this.largeur = 3;
             else
                 this.largeur = largeur;
+            dimension = hauteur * largeur;
         }
 
-        public void setHauteur(int hauteur=3)
+        public void setHauteur(int hauteur = 3)
         {
             if (hauteur < 2)
                 this.hauteur = 3;
             else
                 this.hauteur = hauteur;
+            dimension = hauteur * largeur;
         }
 
         public void setPoids()
@@ -122,157 +112,10 @@ namespace labyrinthe
                 setPoids();
         }
 
-        //choisit une entrée au hazard
-        public bool setEntree()
-        {
-            //tableau minimal
-            if (dimension == 4)
-            {
-                entree = 0;
-                return true;
-            }
 
-            Random rnd = new Random();
-            int pos;
-            //1=gauche,2=dessus,3=droite,4=dessous
-            int face = rnd.Next(1, 5);
-            if (face % 2 == 0)
-                pos = rnd.Next(0, largeur);
-            else
-                pos = rnd.Next(0, hauteur);
-
-            switch (face)
-            {
-                case 1:
-                    entree = 0 + pos * largeur;
-                    break;
-                case 2:
-                    entree = 0 + pos;
-                    break;
-                case 3:
-                    entree = largeur - 1 + pos * largeur;
-                    break;
-                case 4:
-                    entree = dimension - largeur + pos;
-                    break;
-            }
-            return true;
-        }
-
-        //choisit une entrée manuellement
-        public bool setEntree(int pos)
-        {
-            //tableau minimal
-            if (dimension == 4)
-            {
-                entree = 0;
-                return true;
-            }
-            //si la position est sur un coté
-            if (legal(pos))
-            {
-                entree = pos;
-                return true;
-            }
-            return false;
-        }
-
-        //choisit une sortie au hazard
-        public bool setSortie()
-        {
-            Random rnd = new Random();
-            int pos, face;
-            while (true)
-            {
-                face = rnd.Next(1, 5);
-                if (face % 2 == 0)
-                    pos = rnd.Next(0, largeur);
-                else
-                    pos = rnd.Next(0, hauteur);
-
-                switch (face)
-                {
-                    case 1:
-                        entree = 0 + pos * largeur;
-                        break;
-                    case 2:
-                        entree = 0 + pos;
-                        break;
-                    case 3:
-                        entree = largeur - 1 + pos * largeur;
-                        break;
-                    case 4:
-                        entree = dimension - largeur + pos;
-                        break;
-                }
-                if (setSortie(pos))
-                    return true;
-            }
-        }
-
-        //choisit une sortie manuellement
-        public bool setSortie(int pos)
-        {
-            //tableau minimal
-            if (dimension == 4)
-            {
-                sortie = 3;
-                return true;
-            }
-
-            if (legal(pos))
-            {
-                if (loinEntree(pos))
-                {
-                    sortie = pos;
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        //vérifie si la sortie est suffisament loin de l'entrée
-        private bool loinEntree(int pos)
-        {
-            //position sur la première ligne
-            if (pos >= 0 && pos < largeur && entree >= 0 && entree < largeur)
-                return false;
-            //position sur la première colonne
-            if (pos % largeur == 0 && entree % largeur == 0)
-                return false;
-            //dernière ligne
-            if (pos >= dimension - largeur && pos < dimension && entree >= dimension - largeur && entree < dimension)
-                return false;
-            //dernière colonne
-            if (pos % largeur == largeur - 1 && entree % largeur == largeur - 1)
-                return false;
-            //si est à plus de 2 arêtes de distance
-            if (pos - largeur - 1 == entree || pos - largeur + 1 == entree || pos + largeur - 1 == entree || pos + largeur + 1 == entree)
-                return false;
-            return true;
-
-        }
-
-        //vérifie si la position est sur un coté
-        private bool legal(int pos)
-        {
-            //position sur la première ligne
-            if (pos >= 0 && pos < largeur)
-                return true;
-            //position sur la première colonne
-            if (pos % largeur == 0)
-                return true;
-            //dernière ligne
-            if (pos >= dimension - largeur && pos < dimension)
-                return true;
-            //dernière colonne
-            if (pos % largeur == largeur - 1)
-                return true;
-            return false;
-        }
 
         //remplissage du graphe avec les poids des arêtes
-        public void initGraphe()
+        public void initGraphe(ref int nbOp)
         {
             graphe = new int[dimension, 2];
             Random rdn = new Random();
@@ -280,23 +123,33 @@ namespace labyrinthe
             {
                 graphe[i, 0] = rdn.Next(1, poidsMax + 1);
                 graphe[i, 1] = rdn.Next(1, poidsMax + 1);
+
+                nbOp += 2;
             }
 
             //dernière ligne
             int posArret = dimension - 1 - largeur;
             for (int i = dimension - 1; i > posArret; i--)
+            {
                 graphe[i, 1] = -1;
+
+                nbOp++;
+            }
             //dernière colonne
             for (int i = dimension - 1; i > 0; i -= largeur)
+            {
                 graphe[i, 0] = -1;
+
+                nbOp++;
+            }
         }
 
 
-          /************/
-         /* --Prim-- */
+        /************/
+        /* --Prim-- */
         /************/
         //calcul de l'arbre sous-tendant minimal
-        public int[,] Prim()
+        public int[,] Prim(ref int nbOp)
         {
             //graphe des noeuds visités
             visites = new int[dimension];
@@ -310,7 +163,7 @@ namespace labyrinthe
                 foreach (int noeud in visites)
                 {
                     if (noeud == 1)
-                        eval(pos);
+                        eval(pos, ref nbOp);
                     pos++;
                 }
 
@@ -330,40 +183,57 @@ namespace labyrinthe
                         break;
                 }
                 visites[selection] = 1;
+                nbOp+=2;
             }
             return graphe;
         }
 
         //évaluation des arêtes
-        private void eval(int noeud)
+        private void eval(int noeud, ref int nbOp)
         {
             //est
             //si l'arête n'a pas déjà été utilisée et le noeud à droite existe
             if (graphe[noeud, 0] > 0)
             {   //si le noeud à droite a déjà été visité
                 if (visites[noeud + 1] == 1)
+                {
                     graphe[noeud, 0] = -1;
+
+                    nbOp++;
+                }
                 else
                    if (graphe[noeud, 0] > poids)
                 {
                     selection = noeud + 1;
                     poids = graphe[noeud, 0];
                     direction = 'e';
+
+                    nbOp += 3;
                 }
+
+                
             }
 
             //sud
             if (graphe[noeud, 1] > 0)
             {
                 if (visites[noeud + largeur] == 1)
+                {
                     graphe[noeud, 1] = -1;
+
+                    nbOp++;
+                }
                 else
                   if (graphe[noeud, 1] > poids)
                 {
                     selection = noeud + largeur;
                     poids = graphe[noeud, 1];
                     direction = 's';
+
+                    nbOp += 3;
                 }
+
+               
             }
 
             //ouest
@@ -374,6 +244,8 @@ namespace labyrinthe
                 {
                     if (graphe[noeud - 1, 0] > 0)
                         graphe[noeud - 1, 0] = -1;
+
+                    nbOp++;
                 }
                 else
                     if (graphe[noeud - 1, 0] > poids)
@@ -381,7 +253,11 @@ namespace labyrinthe
                     selection = noeud - 1;
                     poids = graphe[noeud - 1, 0];
                     direction = 'o';
+
+                    nbOp += 3;
                 }
+
+                
             }
 
             //nord
@@ -392,6 +268,8 @@ namespace labyrinthe
                 {
                     if (graphe[noeud - largeur, 1] > 0)
                         graphe[noeud - largeur, 1] = -1;
+
+                    nbOp++;
                 }
                 else
                     if (graphe[noeud - largeur, 1] > poids)
@@ -399,64 +277,14 @@ namespace labyrinthe
                     selection = noeud - largeur;
                     poids = graphe[noeud - largeur, 1];
                     direction = 'n';
+
+                    nbOp += 3;
                 }
+
+                
             }
         }
 
-        //calcul du graphe de densité
-        //256 passes, après afficher en valeur RGB
-        //bool rdnES:réinicier entrée-sortie à chaque passe
-        //bool rdnGraphe: réinicier le graphe à chaque passe
-        public void densite(bool rdnES=false, bool rdnGraphe=true)
-        {
-            grapheDensite = new int[dimension, 2];
-            //au moins un des deux
-            if (rdnES || rdnGraphe)
-            {
-                for (int i = 0; i < 256; i++)
-                {
-                    if (rdnES)
-                    {
-                        setEntree();
-                        setSortie(); 
-                    }
-                    if (rdnGraphe)
-                        initGraphe();
-                    else
-                        copieOriginaltoGraphe();
 
-                    Prim();
-                    for (int j = 0; j < dimension; j++)
-                    {
-                        if (graphe[j, 0] == 0)
-                            grapheDensite[j, 0]++;
-                        if (graphe[j, 1] == 0)
-                            grapheDensite[j, 1]++;
-                    }
-                }
-            }
-        }
-
-        /** ****** **/
-        /** Copies **/
-        /** ****** **/
-        private void copieGraphetoOriginal()
-        {
-            grapheOriginal = new int[dimension, 2];
-            for (int i = 0; i < dimension; i++)
-            {
-                grapheOriginal[i, 0] = graphe[i, 0];
-                grapheOriginal[i, 1] = graphe[i, 1];
-            }
-        }
-
-        private void copieOriginaltoGraphe()
-        {
-            for (int i = 0; i < dimension; i++)
-            {
-                graphe[i, 0] = grapheOriginal[i, 0];
-                graphe[i, 1] = grapheOriginal[i, 1];
-            }
-        }
     }
 }
