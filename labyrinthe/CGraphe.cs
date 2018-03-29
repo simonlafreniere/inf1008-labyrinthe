@@ -14,7 +14,7 @@ namespace labyrinthe
         private int selection, poids, entree, sortie;
         private char direction;
 
-        public CGraphe(ref int nbOp)
+        public CGraphe(ref int initComp, ref int initAff, ref int initIttr)
         {
             Random rdn = new Random();
             largeur = rdn.Next(2, 11);
@@ -23,10 +23,10 @@ namespace labyrinthe
             dimension = largeur * hauteur;
             entree = 0;
             sortie = dimension - 1;
-            initGraphe(ref nbOp);
+            initGraphe(ref  initComp, ref  initAff, ref initIttr);
         }
 
-        public CGraphe(int largeur, int hauteur, int poids, ref int nbOp)
+        public CGraphe(int largeur, int hauteur, int poids, ref int initComp, ref int initAff, ref int initIttr)
         {
             setLargeur(largeur);
             setHauteur(hauteur);
@@ -34,7 +34,7 @@ namespace labyrinthe
             dimension = largeur * hauteur;
             entree = 0;
             sortie = dimension - 1;
-            initGraphe(ref nbOp);
+            initGraphe(ref initComp, ref initAff, ref initIttr);
         }
 
 
@@ -115,7 +115,7 @@ namespace labyrinthe
 
 
         //remplissage du graphe avec les poids des arêtes
-        public void initGraphe(ref int nbOp)
+        public void initGraphe(ref int initComp, ref int initAff, ref int initIttr)
         {
             graphe = new int[dimension, 2];
             Random rdn = new Random();
@@ -124,7 +124,9 @@ namespace labyrinthe
                 graphe[i, 0] = rdn.Next(1, poidsMax + 1);
                 graphe[i, 1] = rdn.Next(1, poidsMax + 1);
 
-                nbOp += 2;
+                initAff += 2;
+                initIttr++;
+                initComp++;
             }
 
             //dernière ligne
@@ -133,14 +135,18 @@ namespace labyrinthe
             {
                 graphe[i, 1] = -1;
 
-                nbOp++;
+                initAff++;
+                initIttr++;
+                initComp++;
             }
             //dernière colonne
             for (int i = dimension - 1; i > 0; i -= largeur)
             {
                 graphe[i, 0] = -1;
 
-                nbOp++;
+                initAff++;
+                initIttr++;
+                initComp++;
             }
         }
 
@@ -149,11 +155,12 @@ namespace labyrinthe
         /* --Prim-- */
         /************/
         //calcul de l'arbre sous-tendant minimal
-        public int[,] Prim(ref int nbOp)
+        public int[,] Prim(ref int primIttr, ref int primAff, ref int primComp)
         {
             //graphe des noeuds visités
             visites = new int[dimension];
             visites[entree] = 1;
+            primAff++;
             //pour les noeuds restants à visiter
             for (int i = dimension; i > 1; i--)
             {
@@ -163,9 +170,12 @@ namespace labyrinthe
                 foreach (int noeud in visites)
                 {
                     if (noeud == 1)
-                        eval(pos, ref nbOp);
+                        eval(pos, ref primIttr, ref primAff, ref primComp);
                     pos++;
+                    primComp++;
+                    primIttr++;
                 }
+
 
                 switch (direction)
                 {
@@ -183,13 +193,14 @@ namespace labyrinthe
                         break;
                 }
                 visites[selection] = 1;
-                nbOp+=2;
+                primComp++;
+                primAff++;
             }
             return graphe;
         }
 
         //évaluation des arêtes
-        private void eval(int noeud, ref int nbOp)
+        private void eval(int noeud, ref int primIttr, ref int primAff, ref int primComp)
         {
             //est
             //si l'arête n'a pas déjà été utilisée et le noeud à droite existe
@@ -199,21 +210,24 @@ namespace labyrinthe
                 {
                     graphe[noeud, 0] = -1;
 
-                    nbOp++;
+                    primAff++;
                 }
                 else
-                   if (graphe[noeud, 0] > poids)
                 {
-                    selection = noeud + 1;
-                    poids = graphe[noeud, 0];
-                    direction = 'e';
+                    if (graphe[noeud, 0] > poids)
+                    {
+                        selection = noeud + 1;
+                        poids = graphe[noeud, 0];
+                        direction = 'e';
 
-                    nbOp += 3;
+                        primAff += 3;
+                    }
+                    primComp++;
                 }
+                primComp++;
 
-                
             }
-
+            primComp++;
             //sud
             if (graphe[noeud, 1] > 0)
             {
@@ -221,21 +235,23 @@ namespace labyrinthe
                 {
                     graphe[noeud, 1] = -1;
 
-                    nbOp++;
+                    primAff++;
                 }
                 else
-                  if (graphe[noeud, 1] > poids)
                 {
-                    selection = noeud + largeur;
-                    poids = graphe[noeud, 1];
-                    direction = 's';
+                    if (graphe[noeud, 1] > poids)
+                    {
+                        selection = noeud + largeur;
+                        poids = graphe[noeud, 1];
+                        direction = 's';
 
-                    nbOp += 3;
+                        primAff += 3;
+                    }
+                    primComp++;
                 }
-
-               
+                primComp++;
             }
-
+            primComp++;
             //ouest
             //si il ne s'agit pas de la première colonne
             if (noeud > 0 && noeud % largeur != 0)
@@ -244,22 +260,24 @@ namespace labyrinthe
                 {
                     if (graphe[noeud - 1, 0] > 0)
                         graphe[noeud - 1, 0] = -1;
-
-                    nbOp++;
+                    primComp++;
+                    primAff++;
                 }
                 else
-                    if (graphe[noeud - 1, 0] > poids)
                 {
-                    selection = noeud - 1;
-                    poids = graphe[noeud - 1, 0];
-                    direction = 'o';
+                    if (graphe[noeud - 1, 0] > poids)
+                    {
+                        selection = noeud - 1;
+                        poids = graphe[noeud - 1, 0];
+                        direction = 'o';
 
-                    nbOp += 3;
+                        primAff += 3;
+                    }
+                    primComp++;
                 }
-
-                
+                primComp++;
             }
-
+            primComp++;
             //nord
             //si il ne s'agit pas de la première ligne
             if ((noeud - largeur) > -1)
@@ -268,21 +286,24 @@ namespace labyrinthe
                 {
                     if (graphe[noeud - largeur, 1] > 0)
                         graphe[noeud - largeur, 1] = -1;
-
-                    nbOp++;
+                    primComp++;
+                    primAff++;
                 }
                 else
-                    if (graphe[noeud - largeur, 1] > poids)
                 {
-                    selection = noeud - largeur;
-                    poids = graphe[noeud - largeur, 1];
-                    direction = 'n';
+                    if (graphe[noeud - largeur, 1] > poids)
+                    {
+                        selection = noeud - largeur;
+                        poids = graphe[noeud - largeur, 1];
+                        direction = 'n';
 
-                    nbOp += 3;
+                        primAff += 3;
+                    }
+                    primComp++;
                 }
-
-                
+                primComp++;
             }
+            primComp++;
         }
 
 

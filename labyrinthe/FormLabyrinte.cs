@@ -80,14 +80,16 @@ namespace labyrinthe
                 }
 
                 step = width + 1;
-                int initOp = 0, primOp = 0;
-                CGraphe monGraphe = new CGraphe(largeur, hauteur, 3, ref initOp);
-                monGraphe.Prim(ref primOp);
+                int initComp = 0, primComp = 0, initIttr=0,initAff=0, primIttr=0, primAff=0;
+                CGraphe monGraphe = new CGraphe(largeur, hauteur, 3, ref initComp, ref initAff, ref initIttr);
+                monGraphe.Prim(ref primIttr, ref primAff, ref primComp);
 
                 int nbAr = CCalcul.nBase(largeur, hauteur);
 
-                lblCounterInit.Text = "Init: " + initOp + " opérations\n\nNb arêtes au total: "+nbAr;
-                lblCounterPrim.Text = "Prim: " + primOp + " opérations\n\nNb arêtes choisies: "+(largeur*hauteur-1);
+                lblCounterInit.Text = "Init: " + initIttr + " itérations\n\n"+initAff+ " affectations\n\n"
+                    + initComp + " comparaisons\n\n\n\nNb arêtes au total: "+nbAr;
+                lblCounterPrim.Text = "Prim: " + primIttr + " itérations\n\n" + primAff + " affectations\n\n"
+                    + primComp + " comparaisons\n\n\n\nNb arêtes choisies: " + (largeur*hauteur-1);
 
                 int[,] g1 = monGraphe.getGraphe();
 
